@@ -1,1 +1,76 @@
-Hello world.
+{% extends "piano/layout.html" %}
+{% block body %}
+<main class="max-width">
+
+  <div id="head-nav">
+    <div class="dropdown">
+      <button class="dropdown-toggle button" data-bs-toggle="dropdown">MIDI: None</button>
+      <div class="dropdown-menu">
+        <button class="text dropdown-item">Arturia Keystep 37</button>
+        <button class="text dropdown-item">MPK</button>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropdown-toggle button" data-bs-toggle="dropdown">Instrument: Piano</button>
+      <div class="dropdown-menu">
+        <button class="text dropdown-item active">Piano</button>
+        <button class="text dropdown-item">Synth</button>
+      </div>
+    </div>
+
+    <button class="button">Save Preset</button>
+    <button class="button">Clear</button>
+    
+  </div>
+
+  <div id="piano-container">
+    <div id="sharp-keys">
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key hidden"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key hidden"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key hidden"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key hidden"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key hidden"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+      <span class="sharp-key"></span>
+    </div>
+    <div id="keys">
+      <span class="key" style="border-top-left-radius: 1vw; border-bottom-left-radius: 1vw;"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key"></span>
+      <span class="key" style="border-top-right-radius: 1vw; border-bottom-right-radius: 1vw;"></span>
+    </div>
+  </div>
+  
+</main>
+{% endblock %}
