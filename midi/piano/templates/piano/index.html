@@ -1,14 +1,13 @@
 {% extends "piano/layout.html" %}
+{% load static %}
+{% block script %}<script src="{% static 'piano/scripts/midi.js' %}"></script>{% endblock %}
 {% block body %}
 <main class="max-width">
 
   <div id="head-nav">
     <div class="dropdown">
-      <button class="dropdown-toggle button" data-bs-toggle="dropdown">MIDI: None</button>
-      <div class="dropdown-menu">
-        <button class="text dropdown-item">Arturia Keystep 37</button>
-        <button class="text dropdown-item">MPK</button>
-      </div>
+      <button class="dropdown-toggle button" id="midi-btn" data-bs-toggle="dropdown">MIDI: None</button>
+      <div class="dropdown-menu" id="devices"></div>
     </div>
 
     <div class="dropdown">
