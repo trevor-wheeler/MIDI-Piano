@@ -1,7 +1,34 @@
+
+// Wait for DOM to load before executing main function
 document.addEventListener('DOMContentLoaded', main);
+
+// GLOBAL
+import { keyStatus } from './objects.js';
 
 function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
+    // Select all keys that arent hidden
+    const keys = document.querySelectorAll('.key:not(.hidden)');
+    // Keep track of when the user isn't holding down the mouse
+    var mouseDown = false;
+    document.addEventListener('mouseup', () => mouseDown = false)
+    
+    // For each key
+    keys.forEach(key => {
+        let note = key.getAttribute('data-note');
+        let octave= key.getAttribute('data-octave');
+
+        // When clicked play note
+        key.addEventListener('mouseenter', () => mouseDown && instrument(note, note+octave, parseInt(octave), true));
+        key.addEventListener('mousedown', () => {
+            mouseDown = true;
+            instrument(note, note+octave, parseInt(octave), true);
+        });
+
+        // When mouse button is released release the note
+        key.addEventListener('mouseleave', () => mouseDown && instrument(note, note+octave, parseInt(octave), false));
+        key.addEventListener('mouseup', () => instrument(note, note+octave, parseInt(octave), false));
+    });
 }
 
 function onEnabled() {
@@ -69,11 +96,53 @@ function createDropdown(input, devices) {
 function connectDevice(midiId) {
     // Listen for notes played
     WebMidi.getInputById(midiId).addListener("noteon", event => {
-        console.log(`Play ${event.note.identifier}`);
+        let note;
+        let octave = event.note.octave;
+        event.note.accidental === '#' ? note = event.note.name + event.note.accidental : note = event.note.name;
+        
+        instrument(note, note+octave, parseInt(octave), true);
     });
 
     // Listen for notes released
     WebMidi.getInputById(midiId).addListener("noteoff", event => {
-        console.log(`Release ${event.note.identifier}`);
+        let note;
+        let octave = event.note.octave;
+        event.note.accidental === '#' ? note = event.note.name + event.note.accidental : note = event.note.name;
+        
+        instrument(note, note+octave, parseInt(octave), false);
     });
+}
+
+function instrument(note, keyName, octave, event) {
+    // Handle key animations
+    handleAnimations(note, keyName, octave, event);
+
+    // TODO
+}
+
+function handleAnimations(note, keyName, octave, event) {
+    var key = document.querySelector(`[data-note="${note}"][data-octave="${octave}"]`);
+
+    // Only display animations of visible keys 
+    if (octave > 2 && octave < 6 || octave === 6 && note === 'C') {
+        // If key is pressed down display animation
+        if (event) {
+            key.classList.add('active');
+            // Set the keys animation status to in progress for 300ms
+            keyStatus[keyName].animationInProgress = true;
+            setTimeout(() => keyStatus[keyName].animationInProgress = false, 300);
+        }
+
+        // If key is lifted up display animation
+        else if (!event) {
+            let interval = setInterval(() => {
+                // If the keys animation isn't in progress, display next animation 
+                // Else continue checking animation status until its no longer in progress, then display next animation
+                if (!keyStatus[keyName].animationInProgress) {
+                    key.classList.remove('active');
+                    clearInterval(interval);
+                }
+            }, 10);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 {% extends "piano/layout.html" %}
 {% load static %}
-{% block script %}<script src="{% static 'piano/scripts/midi.js' %}"></script>{% endblock %}
+{% block script %}<script type="module" src="{% static 'piano/scripts/midi.js' %}"></script>{% endblock %}
 {% block body %}
 <main class="max-width">
 
@@ -25,49 +25,50 @@
 
   <div id="piano-container">
     <div id="sharp-keys">
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key hidden"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key hidden"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key hidden"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key hidden"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key hidden"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
-      <span class="sharp-key"></span>
+      <span class="key sharp" data-note="C#" data-octave="3"></span>
+      <span class="key sharp" data-note="D#" data-octave="3"></span>
+      <span class="key sharp hidden"></span>
+      <span class="key sharp" data-note="F#" data-octave="3"></span>
+      <span class="key sharp" data-note="G#" data-octave="3"></span>
+      <span class="key sharp" data-note="A#" data-octave="3"></span>
+      <span class="key sharp hidden"></span>
+      <span class="key sharp" data-note="C#" data-octave="4"></span>
+      <span class="key sharp" data-note="D#" data-octave="4"></span>
+      <span class="key sharp hidden"></span>
+      <span class="key sharp" data-note="F#" data-octave="4"></span>
+      <span class="key sharp" data-note="G#" data-octave="4"></span>
+      <span class="key sharp" data-note="A#" data-octave="4"></span>
+      <span class="key sharp hidden"></span>
+      <span class="key sharp" data-note="C#" data-octave="5"></span>
+      <span class="key sharp" data-note="D#" data-octave="5"></span>
+      <span class="key sharp hidden"></span>
+      <span class="key sharp" data-note="F#" data-octave="5"></span>
+      <span class="key sharp" data-note="G#" data-octave="5"></span>
+      <span class="key sharp" data-note="A#" data-octave="5"></span>
     </div>
     <div id="keys">
-      <span class="key" style="border-top-left-radius: 1vw; border-bottom-left-radius: 1vw;"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key"></span>
-      <span class="key" style="border-top-right-radius: 1vw; border-bottom-right-radius: 1vw;"></span>
+      <span class="key low-c" data-note="C" data-octave="3"></span>
+      <span class="key" data-note="D" data-octave="3"></span>
+      <span class="key" data-note="E" data-octave="3"></span>
+      <span class="key" data-note="F" data-octave="3"></span>
+      <span class="key" data-note="G" data-octave="3"></span>
+      <span class="key" data-note="A" data-octave="3"></span>
+      <span class="key" data-note="B" data-octave="3"></span>
+      <span class="key" data-note="C" data-octave="4"></span>
+      <span class="key" data-note="D" data-octave="4"></span>
+      <span class="key" data-note="E" data-octave="4"></span>
+      <span class="key" data-note="F" data-octave="4"></span>
+      <span class="key" data-note="G" data-octave="4"></span>
+      <span class="key" data-note="A" data-octave="4"></span>
+      <span class="key" data-note="B" data-octave="4"></span>
+      <span class="key" data-note="C" data-octave="5"></span>
+      <span class="key" data-note="D" data-octave="5"></span>
+      <span class="key" data-note="E" data-octave="5"></span>
+      <span class="key" data-note="F" data-octave="5"></span>
+      <span class="key" data-note="G" data-octave="5"></span>
+      <span class="key" data-note="A" data-octave="5"></span>
+      <span class="key" data-note="B" data-octave="5"></span>
+      <span class="key high-c" data-note="C" data-octave="6"></span>
     </div>
   </div>
   
