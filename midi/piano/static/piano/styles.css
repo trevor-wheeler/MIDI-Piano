@@ -8,8 +8,8 @@
     --hover-accent-light: #d9d9d9;
     --button-light: #4eaee8;
     --button-accent-light: #559bc4;
-    --button-active-light: #4993bf;
-    --button-active-accent-light: #3a6f8e;
+    --button-active-light: #76c4f3;
+    --button-active-accent-light: #53b0e7;
     --key-active-light: #e5e5e5;
     --key-active-accent-light: #adadad;
     --sharpkey-active-light: #3c3c3c;
@@ -298,6 +298,13 @@ a {
     left: 12px;
 }
 
+#volume-container {
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 .range {
     appearance: none;
     -moz-appearance: none;
@@ -305,11 +312,50 @@ a {
     background-color: transparent;
     padding-top: 2px;
     width: 10vw;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.track {
+    width: 100%;
+    height: 20px;
+    border-radius: 100px;
+    position: absolute;
+    margin-top: 2px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#volume-icon {
+    position: absolute;
+    left: calc(100% - 32px);
+    top: calc(50% - 16px);
+    font-size: 1.5em;
+    color: var(--heading-dark);
+    height: 32px;
+    width: 32px;
+    vertical-align: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bi-volume-down-fill::before, .bi-volume-up-fill::before, .bi-volume-mute-fill::before {
+    height: 32px;
+    width: 32px;
+    text-align: center;
 }
 
 .range::-webkit-slider-runnable-track {
     height: 20px;
-    background: #fff;
+    background-color: transparent;
+    border: none;
+    border-radius: 100px;
+}
+
+.range::-moz-range-track {
+    height: 20px;
+    background-color: transparent;
     border: none;
     border-radius: 100px;
 }
@@ -324,13 +370,6 @@ a {
     margin-top: -8px;
     border-radius: 50%;
     box-shadow: 0px 4px 0px var(--button-accent);
-}
-
-.range::-moz-range-track {
-    height: 20px;
-    background: #fff;
-    border: none;
-    border-radius: 100px;
 }
 
 .range::-moz-range-thumb {
@@ -396,9 +435,9 @@ a {
     border: solid 1px #33323d24;
     box-shadow: 0px 0.39vw #cdd2d7;
     cursor: pointer;
-    -webkit-user-drag: none; /* For Chrome, Safari, and Opera */
+    -webkit-user-drag: none;
     user-select: none;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .key.sharp {
@@ -408,7 +447,7 @@ a {
     border-radius: 0.39vw;
     box-shadow: 0px 0.58vw black;
     pointer-events: auto;
-    transition: box-shadow 0.15s ease-in-out, background-color 0.2s ease-in-out, height 0.125s ease-in-out;
+    transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out, height 0.1s ease-in-out;
 }
 
 .key.active {

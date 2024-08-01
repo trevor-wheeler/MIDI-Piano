@@ -49,7 +49,11 @@
     </ul>
   </nav>
   <div id="login-btns">
-    <input type="range" class="range">
+    <div id="volume-container">
+      <input type="range" class="range" id="volume-slider" min="0" max="25" value="25">
+      <i class="bi bi-volume-down-fill" id="volume-icon"></i>
+      <span class="track"></span>
+    </div>
     <button class="button light-dark-btn">
       <i class="light-dark-icon bi bi-moon-stars-fill"></i>
     </button>
