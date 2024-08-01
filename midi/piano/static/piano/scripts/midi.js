@@ -3,7 +3,20 @@
 document.addEventListener('DOMContentLoaded', main);
 
 // GLOBAL
-import { keyStatus } from './objects.js';
+import { keyStatus, samples } from './objects.js';
+
+// Instruments
+var piano = new Tone.Sampler({
+    urls: samples,
+    baseUrl: "static/piano/samples/",
+    release: "1",
+    curve: "exponential"
+});
+
+var limiter = new Tone.Limiter(-30);
+
+piano.connect(limiter);
+limiter.toDestination();
 
 function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
@@ -114,10 +127,22 @@ function connectDevice(midiId) {
 }
 
 function instrument(note, keyName, octave, event) {
+    
+    // Check if ToneJS is running if not start it
+    if (Tone.context.state != "running") {
+        Tone.start();
+    }
+
     // Handle key animations
     handleAnimations(note, keyName, octave, event);
 
     // TODO
+    if (event) {
+        piano.triggerAttack(keyName);
+    }
+    else if (!event) {
+        piano.triggerRelease(keyName);
+    }
 }
 
 function handleAnimations(note, keyName, octave, event) {
