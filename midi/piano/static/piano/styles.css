@@ -68,6 +68,43 @@
     }
 }
 
+.dark {
+    --background: var(--background-dark);
+    --container: var(--container-dark);
+    --heading: var(--heading-dark);
+    --text: var(--text-dark);
+    --hover-accent: var(--hover-accent-dark);
+    --button: var(--button-dark);
+    --button-accent: var(--button-accent-dark);
+    --button-active: var(--button-active-dark);
+    --button-active-accent: var(--button-active-accent-dark);
+    --hightlight: var(--highlight-dark);
+    --key-active: var(--key-active-dark);
+    --key-active-accent: var(--key-active-accent-dark);
+    --sharpkey-active: var(--sharpkey-active-dark);
+    --sharpkey-active-accent: var(--sharpkey-active-accent-dark);
+    
+}
+
+.light {
+
+    --background: var(--background-light);
+    --container: var(--container-light);
+    --heading: var(--heading-light);
+    --text: var(--text-light);
+    --hover-accent: var(--hover-accent-light);
+    --button: var(--button-light);
+    --button-accent: var(--button-accent-light);
+    --button-active: var(--button-active-light);
+    --button-active-accent: var(--button-active-accent-light);
+    --hightlight: var(--highlight-light);
+    --key-active: var(--key-active-light);
+    --key-active-accent: var(--key-active-accent-light);
+    --sharpkey-active: var(--sharpkey-active-light);
+    --sharpkey-active-accent: var(--sharpkey-active-accent-light);
+
+}
+
 /* Elements */
 
 html, body {
@@ -282,7 +319,7 @@ a {
     height: 34px;
 }
 
-.light-dark-btn {
+#theme-btn {
     border-top-left-radius: 100%;
     border-bottom-left-radius: 100%;
     border-top-right-radius: 10px;

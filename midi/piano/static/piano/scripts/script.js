@@ -1,7 +1,46 @@
 document.addEventListener('DOMContentLoaded', main);
 
 function main() {
+    theme();
     volume();
+}
+
+function theme() {
+    let theme = localStorage.getItem('theme');
+
+    // Find out what the users default theme is
+    if (theme === 'auto') {
+        // If default theme is dark set local storage to dark
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            localStorage.setItem('theme', 'dark');
+            theme = 'dark';
+        }
+        // If default theme is light set local storage to light
+        else {
+            localStorage.setItem('theme', 'light');
+            theme = 'light';
+        }
+    }
+
+    // Update body to reflect theme
+    document.body.classList.add(theme);
+    const themeBtn = document.getElementById('theme-btn');
+
+    // When theme button is clicked switch between themes
+    themeBtn.onclick = () => {
+        // If theme is dark set theme to light
+        if (theme === 'dark') {
+            document.body.classList = 'light';
+            localStorage.setItem('theme', 'light');
+            theme = 'light';
+        }
+        // If theme is light set theme to dark
+        else if (theme === 'light') {
+            document.body.classList = 'dark';
+            localStorage.setItem('theme', 'dark');
+            theme = 'dark';
+        }
+    }
 }
 
 function volume() {
