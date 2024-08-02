@@ -149,7 +149,7 @@ function handleAnimations(note, keyName, octave, event) {
     var key = document.querySelector(`[data-note="${note}"][data-octave="${octave}"]`);
 
     // Only display animations of visible keys 
-    if (octave > 2 && octave < 6 || octave === 6 && note === 'C') {
+    if (octave > 1 && octave < 5 || octave === 5 && note === 'C') {
         // If key is pressed down display animation
         if (event) {
             key.classList.add('active');

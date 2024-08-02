@@ -2,7 +2,7 @@
 {% load static %}
 {% block script %}<script type="module" src="{% static 'piano/scripts/midi.js' %}"></script>{% endblock %}
 {% block body %}
-<main class="max-width">
+<main class="max-width flex-col">
 
   <div id="head-nav">
     <div class="dropdown">
@@ -25,6 +25,13 @@
 
   <div id="piano-container">
     <div id="sharp-keys">
+      <span class="key sharp" data-note="C#" data-octave="2"></span>
+      <span class="key sharp" data-note="D#" data-octave="2"></span>
+      <span class="key sharp hidden"></span>
+      <span class="key sharp" data-note="F#" data-octave="2"></span>
+      <span class="key sharp" data-note="G#" data-octave="2"></span>
+      <span class="key sharp" data-note="A#" data-octave="2"></span>
+      <span class="key sharp hidden"></span>
       <span class="key sharp" data-note="C#" data-octave="3"></span>
       <span class="key sharp" data-note="D#" data-octave="3"></span>
       <span class="key sharp hidden"></span>
@@ -38,16 +45,16 @@
       <span class="key sharp" data-note="F#" data-octave="4"></span>
       <span class="key sharp" data-note="G#" data-octave="4"></span>
       <span class="key sharp" data-note="A#" data-octave="4"></span>
-      <span class="key sharp hidden"></span>
-      <span class="key sharp" data-note="C#" data-octave="5"></span>
-      <span class="key sharp" data-note="D#" data-octave="5"></span>
-      <span class="key sharp hidden"></span>
-      <span class="key sharp" data-note="F#" data-octave="5"></span>
-      <span class="key sharp" data-note="G#" data-octave="5"></span>
-      <span class="key sharp" data-note="A#" data-octave="5"></span>
     </div>
     <div id="keys">
-      <span class="key low-c" data-note="C" data-octave="3"></span>
+      <span class="key low-c" data-note="C" data-octave="2"></span>
+      <span class="key" data-note="D" data-octave="2"></span>
+      <span class="key" data-note="E" data-octave="2"></span>
+      <span class="key" data-note="F" data-octave="2"></span>
+      <span class="key" data-note="G" data-octave="2"></span>
+      <span class="key" data-note="A" data-octave="2"></span>
+      <span class="key" data-note="B" data-octave="2"></span>
+      <span class="key" data-note="C" data-octave="3"></span>
       <span class="key" data-note="D" data-octave="3"></span>
       <span class="key" data-note="E" data-octave="3"></span>
       <span class="key" data-note="F" data-octave="3"></span>
@@ -61,16 +68,54 @@
       <span class="key" data-note="G" data-octave="4"></span>
       <span class="key" data-note="A" data-octave="4"></span>
       <span class="key" data-note="B" data-octave="4"></span>
-      <span class="key" data-note="C" data-octave="5"></span>
-      <span class="key" data-note="D" data-octave="5"></span>
-      <span class="key" data-note="E" data-octave="5"></span>
-      <span class="key" data-note="F" data-octave="5"></span>
-      <span class="key" data-note="G" data-octave="5"></span>
-      <span class="key" data-note="A" data-octave="5"></span>
-      <span class="key" data-note="B" data-octave="5"></span>
-      <span class="key high-c" data-note="C" data-octave="6"></span>
+      <span class="key high-c" data-note="C" data-octave="5"></span>
     </div>
   </div>
+
+  
+
+  <div id="effects-container">
+
+    <div class="effect-pedal">
+      <h1 class="heading-font">Piano</h1>
+      <i class="power bi bi-power"></i>
+      <div class="knob-container">
+        <dial-gauge class="knob" scale-start="0" scale-end="1000" value="429" sub-title="Attack"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="100" value="49" sub-title="Release"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="1000" value="800" sub-title="Curve"></dial-gauge>
+        <dial-gauge class="knob" scale-start="2" scale-end="6" value="3" sub-title="Octave"></dial-gauge>
+      </div>
+    </div>
+
+    <div class="effect-pedal">
+      <h1 class="heading-font">Delay</h1>
+      <i class="power bi bi-power"></i>
+      <div class="knob-container">
+        <dial-gauge class="knob" scale-start="0" scale-end="1000" value="429" sub-title="Time"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="100" value="49" sub-title="Feedback"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="100" value="75" sub-title="Wet"></dial-gauge>
+      </div>
+    </div>
+    
+    <div class="effect-pedal">
+      <h1 class="heading-font">Reverb</h1>
+      <i class="power bi bi-power"></i>
+      <div class="knob-container">
+        <dial-gauge class="knob" scale-start="0" scale-end="9999" value="500" sub-title="PreDelay"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="9999" value="20" sub-title="Decay"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="100" value="20" sub-title="Wet"></dial-gauge>
+      </div>
+    </div>
+
+    <div class="effect-pedal">
+      <h1 class="heading-font">Distort</h1>
+      <i class="power bi bi-power"></i>
+      <div class="knob-container">
+        <dial-gauge class="knob" scale-start="0" scale-end="100" value="50" sub-title="Distortion"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="2" value="1" sub-title="Oversample"></dial-gauge>
+        <dial-gauge class="knob" scale-start="0" scale-end="100" value="20" sub-title="Wet"></dial-gauge>
+      </div>
+    </div>
   
 </main>
 {% endblock %}

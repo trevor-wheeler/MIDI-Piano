@@ -3,6 +3,7 @@
 :root {
     --background-light: #e7e7e7;
     --container-light: #f3f3f3;
+    --container-accent-light: #cdd2d7;
     --heading-light: #262730;
     --text-light: #262730;
     --hover-accent-light: #d9d9d9;
@@ -17,6 +18,7 @@
 
     --background-dark: #171820;
     --container-dark: #1d1e26;
+    --container-accent-dark: #121216;
     --heading-dark: #ededed;
     --text-dark: #868e96;
     --hover-accent-dark: #24242e;
@@ -34,6 +36,7 @@
     :root {
         --background: var(--background-dark);
         --container: var(--container-dark);
+        --container-accent: var(--container-accent-dark);
         --heading: var(--heading-dark);
         --text: var(--text-dark);
         --hover-accent: var(--hover-accent-dark);
@@ -53,6 +56,7 @@
     :root {
         --background: var(--background-light);
         --container: var(--container-light);
+        --container-accent: var(--container-accent-light);
         --heading: var(--heading-light);
         --text: var(--text-light);
         --hover-accent: var(--hover-accent-light);
@@ -71,6 +75,7 @@
 .dark {
     --background: var(--background-dark);
     --container: var(--container-dark);
+    --container-accent: var(--container-accent-dark);
     --heading: var(--heading-dark);
     --text: var(--text-dark);
     --hover-accent: var(--hover-accent-dark);
@@ -90,6 +95,7 @@
 
     --background: var(--background-light);
     --container: var(--container-light);
+    --container-accent: var(--container-accent-light);
     --heading: var(--heading-light);
     --text: var(--text-light);
     --hover-accent: var(--hover-accent-light);
@@ -127,6 +133,9 @@ body {
     font-style: normal;
     padding: 20px;
     height: 100%;
+}
+main {
+    user-select: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -194,6 +203,11 @@ a {
     width: 100%;
 }
 
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
 /* Side Navbar */
 
 #nav {
@@ -220,7 +234,7 @@ a {
 #logo {
     width: 40px;
     height: 40px;
-    border-radius: 0.5vh;
+    border-radius: 7px;
     fill: var(--heading);
     background-color: transparent;
     margin: 10px;
@@ -510,4 +524,93 @@ a {
     border-bottom-right-radius: 1vw;
 }
 
-/* Workstation */
+/* Pedals */
+
+#effects-container {
+    padding: 0;
+    border-radius: 5px;
+    width: 100%;
+    max-width: calc(100vw - 310px);
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex: 1;
+    margin-top: calc(20px + 0.39vw);
+    overflow-y: auto;
+    flex-wrap: wrap;
+}
+
+.effect-pedal {
+    background-color: var(--container);
+    border-radius: 20px;
+    width: 250px;
+    min-width: 250px;
+    height: 420px;
+    box-shadow: 0px 10px 0px var(--container-accent);
+    margin-bottom: 10px;
+    padding-block: 10px;
+    padding-inline: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.power {
+    font-size: 2.5em;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    padding: 0;
+}
+
+.bi-power::before {
+    cursor: pointer;
+}
+
+.knob-container{
+    margin-top: 10px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 40px;
+    justify-content: center;
+}
+
+.knob {
+    --dg-margin: -15px;
+    --dg-height: 120px;
+    --dg-width: 100px;
+    --dg-background-color: transparent;
+    --dg-border: none;
+    --dg-box-shadow: none;
+
+    --dg-arc-width: 8px;
+    --dg-arc-background-color: var(--background);
+    --dg-arc-color: var(--button);
+
+    --dg-subtitle-color: var(--text);
+    --dg-subtitle-font-family: "Fustat", sans-serif;
+    --dg-subtitle-font-size: 1em;
+    
+
+    --dg-numeric-color: var(--text);
+    --dg-numeric-font-family: "Fustat", sans-serif;
+    --dg-numeric-font-size: 1em;
+    font-weight: 600;
+    user-select: none;
+    position: relative;
+}
+
+.knob::before {
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    position: absolute;
+    top: 10px;
+    padding-top: 37px;
+    text-align: center;
+    content: "";
+    cursor: pointer;
+}
