@@ -3,17 +3,22 @@
 document.addEventListener('DOMContentLoaded', main);
 
 // GLOBAL
-import { keyStatus, samples } from './objects.js';
+import { keyStatus, samples, knobSettings } from './objects.js';
 
 // Instruments
-var piano = new Tone.Sampler({
+const piano = new Tone.Sampler({
     urls: samples,
     baseUrl: "static/piano/samples/",
     release: "1",
     curve: "exponential"
 });
 
-var limiter = new Tone.Limiter(-30);
+// Effects
+const limiter = new Tone.Limiter(-30);
+const delay = new Tone.FeedbackDelay;
+const reverb = new Tone.Reverb;
+const distort = new Tone.Distortion;
+
 
 piano.connect(limiter);
 limiter.toDestination();
@@ -22,9 +27,24 @@ function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
     // Select all keys that arent hidden
     const keys = document.querySelectorAll('.key:not(.hidden)');
+
+    const powerBtns = document.querySelectorAll('.power');
+    const handles = document.querySelectorAll('.knob-handle');
     // Keep track of when the user isn't holding down the mouse
-    var mouseDown = false;
-    document.addEventListener('mouseup', () => mouseDown = false)
+    var keyMouseDown = false;
+    var knobMouseDown = false;
+    document.addEventListener('mouseup', () => {
+        keyMouseDown = false;
+        knobMouseDown = false;
+        document.body.style.cursor = 'default';
+    });
+    // Keep track of the cursor position
+    var x;
+    var y;
+    document.addEventListener('mousemove', event => {
+        x = event.clientX;
+        y = event.clientY
+    })
     
     // For each key
     keys.forEach(key => {
@@ -32,16 +52,73 @@ function main() {
         let octave= key.getAttribute('data-octave');
 
         // When clicked play note
-        key.addEventListener('mouseenter', () => mouseDown && instrument(note, note+octave, parseInt(octave), true));
+        key.addEventListener('mouseenter', () => keyMouseDown && instrument(note, note+octave, parseInt(octave), true));
         key.addEventListener('mousedown', () => {
-            mouseDown = true;
+            keyMouseDown = true;
             instrument(note, note+octave, parseInt(octave), true);
         });
 
         // When mouse button is released release the note
-        key.addEventListener('mouseleave', () => mouseDown && instrument(note, note+octave, parseInt(octave), false));
+        key.addEventListener('mouseleave', () => keyMouseDown && instrument(note, note+octave, parseInt(octave), false));
         key.addEventListener('mouseup', () => instrument(note, note+octave, parseInt(octave), false));
     });
+
+    // For each knob
+    handles.forEach(handle => {
+        var effect = handle.dataset.effect;
+        var pedal = handle.dataset.pedal;
+        var knob = document.getElementById(effect + pedal);
+        var knobValue = parseInt(knob.getAttribute('value'));
+
+        // Update knobs to display correct values
+        translateKnobs(handle, knob, knobValue);
+    
+        // Listen for click
+        handle.addEventListener('mousedown', () => {
+            // Get the users cursor position
+            let initialY = y;
+            knobValue = parseInt(knob.getAttribute('value'));
+
+            knobMouseDown = true;
+            document.body.style.cursor = 'pointer';
+            knob.style.setProperty('--dg-arc-color', 'var(--button-active)');
+        
+            // Run this loop until the user lifts up on their mouse
+            let interval = setInterval(() => {
+                if (knobMouseDown) {
+                    // Difference between the starting cursor position and the current cursor position
+                    let movement = initialY - y + knobValue;
+                    // Dont let the difference be greater than 200 or less than 0
+                    if (movement > 200) {
+                        movement = 200;
+                    }
+                    else if (movement < 0) {
+                        movement = 0;
+                    }
+        
+                    // Update the knob to display the new value
+                    knob.setAttribute('value', movement);
+                    translateKnobs(handle, knob, movement);
+                }
+                else {
+                    knob.style.setProperty('--dg-arc-color', 'var(--button)');
+                    clearInterval(interval);
+                }
+            }, 10);
+        });
+    })
+
+    // Power button for each pedal
+    powerBtns.forEach(powerBtn => {
+        addEventListener('mousedown', () => {
+            let power = powerBtn.dataset.turnedOn;
+            // Toggle power
+            power === "true" ? powerBtn.dataset.turnedOn = false : powerBtn.dataset.turnedOn = true;
+
+            // TODO
+        });
+    });
+
 }
 
 function onEnabled() {
@@ -170,4 +247,45 @@ function handleAnimations(note, keyName, octave, event) {
             }, 10);
         }
     }
+}
+
+function translateKnobs(handle, knob, knobValue) {
+    let config = knobSettings[knob.id];
+
+    // Adjust effect range to fit knob range
+    let step = (config.max - config.min) / 200;
+    let translatedValue = knobValue * step;
+
+    // If knob is is at 0 dont display rounded edges
+    if (translatedValue === 0) {
+        knob.style.strokeLinecap = 'butt';
+    }
+    else {
+        knob.style.strokeLinecap = 'round';
+    }
+
+    // Adjust knob value to respect minimum effect value
+    translatedValue += config.min
+    // Only show decimal places if value is a decimal number
+    if (translatedValue % 1 == 0) {
+        translatedValue = translatedValue.toFixed(0);
+    }
+    else {
+        translatedValue = translatedValue.toFixed(config.places);
+    }
+    // If knob uses custom values use those instead
+    if (!config.numeric) {
+        translatedValue = config.customValues[translatedValue];
+    }
+
+    applyEffects(translatedValue);
+
+    // Add value type if applicable
+    translatedValue += config.type;
+    // Return translated value to knob label
+    handle.innerHTML = translatedValue;
+}
+
+function applyEffects() {
+    // TODO
 }

@@ -4,7 +4,7 @@
 {% block body %}
 <main class="max-width flex-col">
 
-  <div id="head-nav">
+  <div id="head-nav"> 
     <div class="dropdown">
       <button class="dropdown-toggle button" id="midi-btn" data-bs-toggle="dropdown">MIDI: None</button>
       <div class="dropdown-menu" id="devices"></div>
@@ -14,7 +14,6 @@
       <button class="dropdown-toggle button" data-bs-toggle="dropdown">Instrument: Piano</button>
       <div class="dropdown-menu">
         <button class="text dropdown-item active">Piano</button>
-        <button class="text dropdown-item">Synth</button>
       </div>
     </div>
 
@@ -78,42 +77,63 @@
 
     <div class="effect-pedal">
       <h1 class="heading-font">Piano</h1>
-      <i class="power bi bi-power"></i>
+      <i class="power bi bi-power" data-turned-on="true" data-pedal="piano"></i>
+      <div class="knob-handle-container">
+        <span class="knob-handle" data-effect="attack" data-pedal="piano"></span>
+        <span class="knob-handle" data-effect="release" data-pedal="piano"></span>
+        <span class="knob-handle" data-effect="curve" data-pedal="piano"></span>
+        <span class="knob-handle" data-effect="octave" data-pedal="piano"></span>
+      </div>
       <div class="knob-container">
-        <dial-gauge class="knob" scale-start="0" scale-end="1000" value="429" sub-title="Attack"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="100" value="49" sub-title="Release"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="1000" value="800" sub-title="Curve"></dial-gauge>
-        <dial-gauge class="knob" scale-start="2" scale-end="6" value="3" sub-title="Octave"></dial-gauge>
+        <dial-gauge class="knob" id="attackpiano" scale-start="0" scale-end="200" value="0" sub-title="Attack"></dial-gauge>
+        <dial-gauge class="knob" id="releasepiano" scale-start="0" scale-end="200" value="0" sub-title="Release"></dial-gauge>
+        <dial-gauge class="knob" id="curvepiano" scale-start="0" scale-end="200" value="0" sub-title="Curve"></dial-gauge>
+        <dial-gauge class="knob" id="octavepiano" scale-start="0" scale-end="200" value="0" sub-title="Octave"></dial-gauge>
       </div>
     </div>
 
     <div class="effect-pedal">
       <h1 class="heading-font">Delay</h1>
-      <i class="power bi bi-power"></i>
+      <i class="power bi bi-power" data-turned-on="false" data-pedal="delay"></i>
+      <div class="knob-handle-container">
+        <span class="knob-handle" data-effect="timedelay" data-pedal="delay"></span>
+        <span class="knob-handle" data-effect="feedback" data-pedal="delay"></span>
+        <span class="knob-handle" data-effect="wet" data-pedal="delay"></span>
+      </div>
       <div class="knob-container">
-        <dial-gauge class="knob" scale-start="0" scale-end="1000" value="429" sub-title="Time"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="100" value="49" sub-title="Feedback"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="100" value="75" sub-title="Wet"></dial-gauge>
+        <dial-gauge class="knob" id="timedelaydelay" scale-start="0" scale-end="200" value="0" sub-title="Time"></dial-gauge>
+        <dial-gauge class="knob" id="feedbackdelay" scale-start="0" scale-end="200" value="0" sub-title="Feedback"></dial-gauge>
+        <dial-gauge class="knob" id="wetdelay" scale-start="0" scale-end="200" value="0" sub-title="Wet"></dial-gauge>
       </div>
     </div>
     
     <div class="effect-pedal">
       <h1 class="heading-font">Reverb</h1>
-      <i class="power bi bi-power"></i>
+      <i class="power bi bi-power" data-turned-on="false" data-pedal="reverb"></i>
+      <div class="knob-handle-container">
+        <span class="knob-handle" data-effect="predelay" data-pedal="reverb"></span>
+        <span class="knob-handle" data-effect="decay" data-pedal="reverb"></span>
+        <span class="knob-handle" data-effect="wet" data-pedal="reverb"></span>
+      </div>
       <div class="knob-container">
-        <dial-gauge class="knob" scale-start="0" scale-end="9999" value="500" sub-title="PreDelay"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="9999" value="20" sub-title="Decay"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="100" value="20" sub-title="Wet"></dial-gauge>
+        <dial-gauge class="knob" id="predelayreverb" scale-start="0" scale-end="200" value="0" sub-title="PreDelay"></dial-gauge>
+        <dial-gauge class="knob" id="decayreverb" scale-start="0" scale-end="200" value="0" sub-title="Decay"></dial-gauge>
+        <dial-gauge class="knob" id="wetreverb" scale-start="0" scale-end="200" value="0" sub-title="Wet"></dial-gauge>
       </div>
     </div>
 
     <div class="effect-pedal">
       <h1 class="heading-font">Distort</h1>
-      <i class="power bi bi-power"></i>
+      <i class="power bi bi-power" data-turned-on="false" data-pedal="distort"></i>
+      <div class="knob-handle-container">
+        <span class="knob-handle" data-effect="distortion" data-pedal="distort"></span>
+        <span class="knob-handle" data-effect="oversample" data-pedal="distort"></span>
+        <span class="knob-handle" data-effect="wet" data-pedal="distort"></span>
+      </div>
       <div class="knob-container">
-        <dial-gauge class="knob" scale-start="0" scale-end="100" value="50" sub-title="Distortion"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="2" value="1" sub-title="Oversample"></dial-gauge>
-        <dial-gauge class="knob" scale-start="0" scale-end="100" value="20" sub-title="Wet"></dial-gauge>
+        <dial-gauge class="knob" id="distortiondistort" scale-start="0" scale-end="200" value="0" sub-title="Distortion"></dial-gauge>
+        <dial-gauge class="knob" id="oversampledistort" scale-start="0" scale-end="200" value="0" sub-title="Oversample"></dial-gauge>
+        <dial-gauge class="knob" id="wetdistort" scale-start="0" scale-end="200" value="0" sub-title="Wet"></dial-gauge>
       </div>
     </div>
   
