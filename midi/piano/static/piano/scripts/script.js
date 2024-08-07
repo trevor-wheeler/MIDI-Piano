@@ -1,8 +1,44 @@
 document.addEventListener('DOMContentLoaded', main);
 
-function main() {
-    theme();
-    volume();
+import { samples } from './objects.js';
+
+// Instruments
+export const piano = new Tone.Sampler({
+    urls: samples,
+    baseUrl: "static/piano/samples/",
+    release: "1",
+    curve: "exponential"
+});
+
+// Effects
+const limiter = new Tone.Limiter(-30);
+const gain = new Tone.Gain;
+export const delay = new Tone.FeedbackDelay;
+export const reverb = new Tone.Reverb;
+export const distort = new Tone.Distortion;
+
+// Effect chain
+piano.connect(delay);
+delay.connect(reverb);
+reverb.connect(distort);
+distort.connect(gain);
+gain.connect(limiter);
+limiter.toDestination();
+
+// Map
+export const effectMap = {
+    'attackpiano': (value) => piano.attack = value,
+    'releasepiano': (value) => piano.release = value,
+    'curvepiano': (value) => piano.curve = value,
+    'timedelaydelay': (value) => delay.delayTime.value = value,
+    'feedbackdelay': (value) => delay.feedback.value = value,
+    'wetdelay': (value) => delay.wet.value = value,
+    'predelayreverb': (value) => reverb.preDelay = value,
+    'decayreverb': (value) => reverb.decay = value,
+    'wetreverb': (value) => reverb.wet.value = value,
+    'distortiondistort': (value) => distort.distortion = value,
+    'oversampledistort': (value) => distort.oversample = value,
+    'wetdistort': (value) => distort.wet.value = value
 }
 
 function theme() {
@@ -78,14 +114,23 @@ function volume() {
     var(--button-active) ${percentage + (0.5 - percentage / 100)}%,
     #fff ${percentage + (0.5 - percentage / 100)}%)`;
 
+    gain.gain.value = percentage * 0.01;
+
     // When handle is moved update slider to display correct volume
     volumeSlider.addEventListener('input', () => {
         volume = volumeSlider.value;
         percentage = volume * 4;
         localStorage.setItem('volume', volume);
 
+        gain.gain.value = percentage * 0.01;
+
         volumeIcon.style.left = `calc(${percentage}% - (32px * ${percentage / 100}))`;
         track.style.background = `linear-gradient(to right, var(--button-active) ${percentage + (0.5 - percentage / 100)}%, #fff ${percentage + (0.5 - percentage / 100)}%)`;
         getIcon(volume);
     })
+}
+
+function main() {
+    theme();
+    volume();
 }

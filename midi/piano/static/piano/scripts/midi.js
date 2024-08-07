@@ -3,25 +3,8 @@
 document.addEventListener('DOMContentLoaded', main);
 
 // GLOBAL
-import { keyStatus, samples, knobSettings } from './objects.js';
-
-// Instruments
-const piano = new Tone.Sampler({
-    urls: samples,
-    baseUrl: "static/piano/samples/",
-    release: "1",
-    curve: "exponential"
-});
-
-// Effects
-const limiter = new Tone.Limiter(-30);
-const delay = new Tone.FeedbackDelay;
-const reverb = new Tone.Reverb;
-const distort = new Tone.Distortion;
-
-
-piano.connect(limiter);
-limiter.toDestination();
+import { keyStatus, knobSettings } from './objects.js';
+import { piano, effectMap, delay, reverb, distort } from './script.js';
 
 function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
@@ -49,18 +32,36 @@ function main() {
     // For each key
     keys.forEach(key => {
         let note = key.getAttribute('data-note');
-        let octave= key.getAttribute('data-octave');
+        let octave = key.getAttribute('data-octave');
 
         // When clicked play note
-        key.addEventListener('mouseenter', () => keyMouseDown && instrument(note, note+octave, parseInt(octave), true));
+        key.addEventListener('mouseenter', () => {
+            note = key.getAttribute('data-note');
+            octave = key.getAttribute('data-octave');
+
+            keyMouseDown && instrument(note, note+octave, parseInt(octave), true)
+        });
         key.addEventListener('mousedown', () => {
+            note = key.getAttribute('data-note');
+            octave = key.getAttribute('data-octave');
+
             keyMouseDown = true;
             instrument(note, note+octave, parseInt(octave), true);
         });
 
         // When mouse button is released release the note
-        key.addEventListener('mouseleave', () => keyMouseDown && instrument(note, note+octave, parseInt(octave), false));
-        key.addEventListener('mouseup', () => instrument(note, note+octave, parseInt(octave), false));
+        key.addEventListener('mouseleave', () => {
+            note = key.getAttribute('data-note');
+            octave = key.getAttribute('data-octave');
+
+            keyMouseDown && instrument(note, note+octave, parseInt(octave), false)
+        });
+        key.addEventListener('mouseup', () => {
+            note = key.getAttribute('data-note');
+            octave= key.getAttribute('data-octave');
+        
+            instrument(note, note+octave, parseInt(octave), false)
+        });
     });
 
     // For each knob
@@ -71,7 +72,8 @@ function main() {
         var knobValue = parseInt(knob.getAttribute('value'));
 
         // Update knobs to display correct values
-        translateKnobs(handle, knob, knobValue);
+        var translatedValue = translateKnobs(handle, knob, knobValue);
+        applyEffects(translatedValue, knob);
     
         // Listen for click
         handle.addEventListener('mousedown', () => {
@@ -98,10 +100,11 @@ function main() {
         
                     // Update the knob to display the new value
                     knob.setAttribute('value', movement);
-                    translateKnobs(handle, knob, movement);
+                    translatedValue = translateKnobs(handle, knob, movement);
                 }
                 else {
                     knob.style.setProperty('--dg-arc-color', 'var(--button)');
+                    applyEffects(translatedValue, knob);
                     clearInterval(interval);
                 }
             }, 10);
@@ -210,10 +213,13 @@ function instrument(note, keyName, octave, event) {
         Tone.start();
     }
 
+    if (octave < 1 || octave > 7 && note !== 'C' ) {
+        return
+    }
+
     // Handle key animations
     handleAnimations(note, keyName, octave, event);
 
-    // TODO
     if (event) {
         piano.triggerAttack(keyName);
     }
@@ -225,28 +231,30 @@ function instrument(note, keyName, octave, event) {
 function handleAnimations(note, keyName, octave, event) {
     var key = document.querySelector(`[data-note="${note}"][data-octave="${octave}"]`);
 
-    // Only display animations of visible keys 
-    if (octave > 1 && octave < 5 || octave === 5 && note === 'C') {
-        // If key is pressed down display animation
-        if (event) {
-            key.classList.add('active');
-            // Set the keys animation status to in progress for 300ms
-            keyStatus[keyName].animationInProgress = true;
-            setTimeout(() => keyStatus[keyName].animationInProgress = false, 300);
-        }
-
-        // If key is lifted up display animation
-        else if (!event) {
-            let interval = setInterval(() => {
-                // If the keys animation isn't in progress, display next animation 
-                // Else continue checking animation status until its no longer in progress, then display next animation
-                if (!keyStatus[keyName].animationInProgress) {
-                    key.classList.remove('active');
-                    clearInterval(interval);
-                }
-            }, 10);
-        }
+    // Only display animation for keys in visible octave
+    if (!key) {
+        return
     }
+
+    // If key is pressed down display animation
+    if (event) {
+        key.classList.add('active');
+        // Set the keys animation status to in progress for 300ms
+        keyStatus[keyName].animationInProgress = true;
+        setTimeout(() => keyStatus[keyName].animationInProgress = false, 300);
+    }
+    // If key is lifted up display animation
+    else if (!event) {
+        let interval = setInterval(() => {
+            // If the keys animation isn't in progress, display next animation 
+            // Else continue checking animation status until its no longer in progress, then display next animation
+            if (!keyStatus[keyName].animationInProgress) {
+                key.classList.remove('active');
+                clearInterval(interval);
+            }
+        }, 10);
+    }
+
 }
 
 function translateKnobs(handle, knob, knobValue) {
@@ -278,14 +286,37 @@ function translateKnobs(handle, knob, knobValue) {
         translatedValue = config.customValues[translatedValue];
     }
 
-    applyEffects(translatedValue);
+    let unformatted = translatedValue;
 
     // Add value type if applicable
     translatedValue += config.type;
     // Return translated value to knob label
     handle.innerHTML = translatedValue;
+
+    return unformatted;
 }
 
-function applyEffects() {
-    // TODO
+function applyEffects(value, knob) {
+    const keys = document.querySelectorAll('.key:not(.hidden)');
+
+    // Adjust percentage to normal range
+    if (knobSettings[knob.id].type === '%') {
+        value *= 0.01;
+    }
+
+    // If octave knob apply octave changes
+    if (knob.id === 'octavepiano') {
+        keys.forEach(key => {
+            let octave = parseInt(key.getAttribute('data-octave'));
+            let group = parseInt(key.getAttribute('data-group'));
+            value = parseInt(value);
+            octave = value + group - 1;
+
+            key.setAttribute('data-octave', octave);
+        });
+    }
+    // Else apply knob values to effects
+    else {
+        effectMap[knob.id](value);
+    }
 }
