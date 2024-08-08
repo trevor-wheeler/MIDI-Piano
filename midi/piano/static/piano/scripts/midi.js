@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', main);
 
 // GLOBAL
 import { keyStatus, knobSettings } from './objects.js';
-import { piano, effectMap, delay, reverb, distort } from './script.js';
+import { piano, effectMap } from './main.js';
 
 function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
@@ -71,7 +71,16 @@ function main() {
         var knob = document.getElementById(effect + pedal);
         var knobValue = parseInt(knob.getAttribute('value'));
 
+        // Grab effect data from local storage
+        if (localStorage.getItem(effect + pedal) !== null) {
+            knobValue = localStorage.getItem(knob.id);
+        }
+        else {
+            localStorage.setItem(knob.id, knobValue);
+        }
+
         // Update knobs to display correct values
+        knob.setAttribute('value', knobValue);
         var translatedValue = translateKnobs(handle, knob, knobValue);
         applyEffects(translatedValue, knob);
     
@@ -79,6 +88,7 @@ function main() {
         handle.addEventListener('mousedown', () => {
             // Get the users cursor position
             let initialY = y;
+            let movement;
             knobValue = parseInt(knob.getAttribute('value'));
 
             knobMouseDown = true;
@@ -89,7 +99,7 @@ function main() {
             let interval = setInterval(() => {
                 if (knobMouseDown) {
                     // Difference between the starting cursor position and the current cursor position
-                    let movement = initialY - y + knobValue;
+                    movement = initialY - y + knobValue;
                     // Dont let the difference be greater than 200 or less than 0
                     if (movement > 200) {
                         movement = 200;
@@ -104,6 +114,7 @@ function main() {
                 }
                 else {
                     knob.style.setProperty('--dg-arc-color', 'var(--button)');
+                    localStorage.setItem(knob.id, movement);
                     applyEffects(translatedValue, knob);
                     clearInterval(interval);
                 }
