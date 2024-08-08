@@ -5,7 +5,7 @@
     --container-light: #f3f3f3;
     --container-accent-light: #cdd2d7;
     --heading-light: #262730;
-    --text-light: #262730;
+    --text-light: #545454;
     --hover-accent-light: #d9d9d9;
     --button-light: #4eaee8;
     --button-accent-light: #559bc4;
@@ -652,8 +652,6 @@ a {
 
 #login-container {
     background-color: var(--container);
-    width: 300px;
-    height: 440px;
     padding-inline: 40px;
     padding-block: 25px;
     border-radius: 20px;
@@ -661,8 +659,18 @@ a {
     text-align: center;
 }
 
-.divider {
-    margin-bottom: 30px;
+.login {
+    width: 300px;
+    height: 400px;
+}
+
+.register {
+    width: 300px;
+    height: 420px;
+}
+
+.login-form {
+    margin-top: 20px;
 }
 
 #login-text {
@@ -674,12 +682,16 @@ a {
 
 .form-button {
     align-self: flex-end;
+    box-shadow: none;
+    height: 35px;
 }
 
 .invalid-feedback {
-    height: 40px;
+    height: 30px;
     width: 100%;
     display: block;
+    text-align: left;
+    padding-inline: 1em;
 }
 
 .login-input {

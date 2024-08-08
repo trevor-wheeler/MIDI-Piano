@@ -1,0 +1,30 @@
+{% extends "piano/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+<script src="{% static 'piano/scripts/register.js' %}"></script>
+{% endblock %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+<main class="centered-page">
+  <div class="flex-col register" id="login-container">
+    <h1 class="heading-font">Register</h1>
+
+    <form class="login-form flex-col" action="{% url 'register' %}" method="post">
+      {% csrf_token %}
+      <input class="text-input login-input" type="text" name="username" id="username" placeholder="Username">
+      <div id="username-feedback" class="invalid-feedback"></div>
+      <input class="text-input login-input" type="password" name="password" id="password" placeholder="Password">
+      <div id="password-feedback" class="invalid-feedback"></div>
+      <input class="text-input login-input" type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password">
+      <div id="confirm-password-feedback" class="invalid-feedback"></div>
+      <input class="button form-button" type="submit" value="Register">
+    </form>
+  </div>
+</main>
+{% endblock %}

@@ -12,11 +12,10 @@ Login
 
 {% block body %}
 <main class="centered-page">
-  <div class="flex-col" id="login-container">
+  <div class="flex-col login" id="login-container">
     <h1 class="heading-font">Login</h1>
-    <hr class="divider">
 
-    <form class="flex-col" action="{% url 'login' %}" method="post">
+    <form class="login-form flex-col" action="{% url 'login' %}" method="post">
       {% csrf_token %}
       {% if error|default:"" %}
       <input class="text-input login-input is-invalid" type="text" name="username" id="username" placeholder="Username">
@@ -33,7 +32,7 @@ Login
     </form>
 
     <span id="login-text">
-      Don't have an account? <a href="#">Register here.</a>
+      Don't have an account? <a href="{% url 'register' %}">Register here.</a>
     </span>
   </div>
 </main>
