@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDI Piano</title>
+  <title>{% block title %}MIDI Piano{% endblock %}</title>
   <link rel="icon" type="image/x-icon" href="{% static 'piano/favicon.ico' %}">
   <!-- WebMIDI.js & Tone.js -->
   <script src="https://cdn.jsdelivr.net/npm/webmidi@next/dist/iife/webmidi.iife.js"></script>
@@ -32,11 +32,11 @@
       <h1 class="heading-font" id="title">MIDI Piano</h1>
     </div>
     <ul id="nav-links">
-      <li class="link"><a href="#">Home</a></li>
+      <li class="link"><a href="{% url 'home' %}">Home</a></li>
       <li class="link"><a href="#">Presets</a></li>
       <li class="link"><a href="#">Account</a></li>
     </ul>
-    <input id="preset-searchbar" type="text" placeholder="Search Presets">
+    <input id="preset-searchbar" class="text-input" type="text" placeholder="Search Presets">
     <ul id="presets">
       <li class="preset">Preset 1<i class="trash bi bi-trash3"></i></li>
       <li class="preset active">Preset 2<i class="trash bi bi-trash3"></i></li>
@@ -59,7 +59,11 @@
     <button class="button" id="theme-btn">
       <i class="light-dark-icon bi bi-moon-stars-fill"></i>
     </button>
-    <button class="button">Login</button>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}"><button class="button">Logout</button></a>
+    {% else %}
+    <a href="{% url 'login' %}"><button class="button">Login</button></a>
+    {% endif %}
   </div>
   {% block body %}
   {% endblock %}

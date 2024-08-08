@@ -83,6 +83,14 @@ function volume() {
     const volumeIcon = document.getElementById('volume-icon');
     const volumeSlider = document.getElementById('volume-slider');
     const track = document.querySelector('.track');
+    const login = document.querySelectorAll('#login-container');
+
+    // Don't display volume slider on login pages
+    if (login.length > 0) {
+        volumeIcon.style.display = 'none';
+        volumeSlider.style.display = 'none';
+        track.style.display = 'none';
+    }
 
     const getIcon = (volume) => {
         // If muted display mute icon

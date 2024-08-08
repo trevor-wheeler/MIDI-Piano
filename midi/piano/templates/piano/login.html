@@ -1,0 +1,40 @@
+{% extends "piano/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+<script src="{% static 'piano/scripts/login.js' %}"></script>
+{% endblock %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+<main class="centered-page">
+  <div class="flex-col" id="login-container">
+    <h1 class="heading-font">Login</h1>
+    <hr class="divider">
+
+    <form class="flex-col" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      {% if error|default:"" %}
+      <input class="text-input login-input is-invalid" type="text" name="username" id="username" placeholder="Username">
+      <div class="invalid-feedback">Incorrect username or password.</div>
+      <input class="text-input login-input is-invalid" type="password" name="password" id="password" placeholder="Password">
+      <div class="invalid-feedback">Incorrect username or password.</div>
+      {% else %}
+      <input class="text-input login-input" type="text" name="username" id="username" placeholder="Username">
+      <div class="invalid-feedback"></div>
+      <input class="text-input login-input" type="password" name="password" id="password" placeholder="Password">
+      <div class="invalid-feedback"></div>
+      {% endif %}
+      <input class="button form-button" type="submit" value="Login">
+    </form>
+
+    <span id="login-text">
+      Don't have an account? <a href="#">Register here.</a>
+    </span>
+  </div>
+</main>
+{% endblock %}
