@@ -27,7 +27,7 @@ function createSamples() {
 }
 
 export var knobSettings = {
-    'attackpiano': {
+    'pianoattack': {
         'numeric': true,
         'min': 0,
         'max': 10,
@@ -36,7 +36,7 @@ export var knobSettings = {
         'places': 2,
         'customValues': []
     },
-    'releasepiano': {
+    'pianorelease': {
         'numeric': true,
         'min': 0.05,
         'max': 10,
@@ -45,7 +45,7 @@ export var knobSettings = {
         'places': 2,
         'customValues': []
     },
-    'curvepiano': {
+    'pianocurve': {
         'numeric': false,
         'min': 0,
         'max': 1,
@@ -54,7 +54,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': ['linear', 'expo']
     },
-    'octavepiano': {
+    'pianooctave': {
         'numeric': true,
         'min': 1,
         'max': 5,
@@ -63,7 +63,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': []
     },
-    'timedelaydelay': {
+    'delaydelaytime': {
         'numeric': true,
         'min': 0,
         'max': 100,
@@ -72,7 +72,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': []
     },
-    'feedbackdelay': {
+    'delayfeedback': {
         'numeric': true,
         'min': 0,
         'max': 100,
@@ -81,7 +81,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': []
     },
-    'wetdelay': {
+    'delaywet': {
         'numeric': true,
         'min': 0,
         'max': 100,
@@ -90,7 +90,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': []
     },
-    'predelayreverb': {
+    'reverbpredelay': {
         'numeric': true,
         'min': 0,
         'max': 10,
@@ -99,7 +99,7 @@ export var knobSettings = {
         'places': 2,
         'customValues': []
     },
-    'decayreverb': {
+    'reverbdecay': {
         'numeric': true,
         'min': 0.5,
         'max': 100,
@@ -108,7 +108,7 @@ export var knobSettings = {
         'places': 1,
         'customValues': []
     },
-    'wetreverb': {
+    'reverbwet': {
         'numeric': true,
         'min': 0,
         'max': 100,
@@ -117,7 +117,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': []
     },
-    'distortiondistort': {
+    'distortiondistortion': {
         'numeric': true,
         'min': 0,
         'max': 100,
@@ -126,7 +126,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': []
     },
-    'oversampledistort': {
+    'distortionoversample': {
         'numeric': false,
         'min': 0,
         'max': 2,
@@ -135,7 +135,7 @@ export var knobSettings = {
         'places': 0,
         'customValues': ['none', '2x', '4x']
     },
-    'wetdistort': {
+    'distortionwet': {
         'numeric': true,
         'min': 0,
         'max': 100,

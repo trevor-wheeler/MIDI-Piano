@@ -722,7 +722,7 @@ a {
     text-align: center;
     width: 300px;
     height: fit-content;
-    transform: translate(-100px, -100px);
+    transform: translate(0, -7.5vh);
     gap: 30px;
 }
 

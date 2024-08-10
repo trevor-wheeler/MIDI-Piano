@@ -15,30 +15,30 @@ const limiter = new Tone.Limiter(-30);
 const gain = new Tone.Gain;
 export const delay = new Tone.FeedbackDelay;
 export const reverb = new Tone.Reverb;
-export const distort = new Tone.Distortion;
+export const distortion = new Tone.Distortion;
 
 // Effect chain
 piano.connect(delay);
 delay.connect(reverb);
-reverb.connect(distort);
-distort.connect(gain);
+reverb.connect(distortion);
+distortion.connect(gain);
 gain.connect(limiter);
 limiter.toDestination();
 
 // Map
 export const effectMap = {
-    'attackpiano': (value) => piano.attack = value,
-    'releasepiano': (value) => piano.release = value,
-    'curvepiano': (value) => piano.curve = value,
-    'timedelaydelay': (value) => delay.delayTime.value = value,
-    'feedbackdelay': (value) => delay.feedback.value = value,
-    'wetdelay': (value) => delay.wet.value = value,
-    'predelayreverb': (value) => reverb.preDelay = value,
-    'decayreverb': (value) => reverb.decay = value,
-    'wetreverb': (value) => reverb.wet.value = value,
-    'distortiondistort': (value) => distort.distortion = value,
-    'oversampledistort': (value) => distort.oversample = value,
-    'wetdistort': (value) => distort.wet.value = value
+    'pianoattack': (value) => piano.attack = value,
+    'pianorelease': (value) => piano.release = value,
+    'pianocurve': (value) => piano.curve = value,
+    'delaydelaytime': (value) => delay.delayTime.value = value,
+    'delayfeedback': (value) => delay.feedback.value = value,
+    'delaywet': (value) => delay.wet.value = value,
+    'reverbpredelay': (value) => reverb.preDelay = value,
+    'reverbdecay': (value) => reverb.decay = value,
+    'reverbwet': (value) => reverb.wet.value = value,
+    'distortiondistortion': (value) => distortion.distortion = value,
+    'distortionoversample': (value) => distortion.oversample = value,
+    'distortionwet': (value) => distortion.wet.value = value
 }
 
 function theme() {

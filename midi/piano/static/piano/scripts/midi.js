@@ -68,11 +68,11 @@ function main() {
     handles.forEach(handle => {
         var effect = handle.dataset.effect;
         var pedal = handle.dataset.pedal;
-        var knob = document.getElementById(effect + pedal);
+        var knob = document.getElementById(pedal + effect);
         var knobValue = parseInt(knob.getAttribute('value'));
 
         // Grab effect data from local storage
-        if (localStorage.getItem(effect + pedal) !== null) {
+        if (localStorage.getItem(pedal + effect) !== null) {
             knobValue = localStorage.getItem(knob.id);
         }
         else {
@@ -370,7 +370,7 @@ function applyEffects(value, knob) {
     }
 
     // If octave knob apply octave changes
-    if (knob.id === 'octavepiano') {
+    if (knob.id === 'pianooctave') {
         keys.forEach(key => {
             let octave = parseInt(key.getAttribute('data-octave'));
             let group = parseInt(key.getAttribute('data-group'));
