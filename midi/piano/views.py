@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User
+import json
+from .models import User, Preset
 
 # Create your views here.
 def home(request):
@@ -75,6 +76,7 @@ def register_view(request):
 
 # API
 def api(request, param1, param2):
+    # Check for username availability
     if param1 == "username":
         try:
             user = User.objects.get(username__iexact=param2)
@@ -82,3 +84,21 @@ def api(request, param1, param2):
             return JsonResponse({})
 
         return JsonResponse({"error": "Username taken."})
+
+    # Create and delete presets
+    elif param1 == "preset":
+        preset = json.loads(request.body.decode('utf-8'))
+
+        # Save preset to database
+        if param2 == "create":
+            newPreset = Preset(
+                name=preset['name'],
+                knobValues=preset['values'],
+                creator=request.user
+            )
+            newPreset.save()
+            return HttpResponse(status=200)
+
+        # Delete preset from database
+        elif param2 =="delete":
+            pass # TODO

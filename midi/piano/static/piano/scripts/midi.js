@@ -155,7 +155,7 @@ function createPopup(element) {
         input.addEventListener('input', () => {
             input.value.length === 0 ? saveBtn.classList.add('disabled') : saveBtn.classList.remove('disabled');
         });
-        saveBtn.addEventListener('click', savePreset);
+        saveBtn.addEventListener('click', () => savePreset(input));
     }
     // If the delete button was clicked display the confirmation form
     else {
@@ -172,8 +172,28 @@ function createPopup(element) {
     document.getElementById('cancel-btn').addEventListener('click', closePopup);
 }
 
-function savePreset() {
-    // TODO
+function savePreset(input) {
+    var preset = {};
+    var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    preset.values = {};
+    preset.name = input.value;
+
+    for (let effect in effectMap) {
+        preset.values[effect] = localStorage.getItem(effect);
+    }
+
+    fetch('api/preset/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(preset)
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 
     closePopup();
 }
