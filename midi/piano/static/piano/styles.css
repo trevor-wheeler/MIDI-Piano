@@ -6,11 +6,13 @@
     --container-accent-light: #cdd2d7;
     --heading-light: #262730;
     --text-light: #545454;
+    --text-disabled-light: #f1f1f1;
     --hover-accent-light: #d9d9d9;
     --button-light: #4eaee8;
     --button-accent-light: #559bc4;
     --button-active-light: #76c4f3;
     --button-active-accent-light: #53b0e7;
+    --button-disabled-light: #9cc3db;
     --key-active-light: #e5e5e5;
     --key-active-accent-light: #adadad;
     --sharpkey-active-light: #3c3c3c;
@@ -21,11 +23,13 @@
     --container-accent-dark: #121216;
     --heading-dark: #ededed;
     --text-dark: #868e96;
+    --text-disabled-dark: #565656;
     --hover-accent-dark: #24242e;
     --button-dark: #44496d;
     --button-accent-dark: #2f3256;
     --button-active-dark: #5c6183;
     --button-active-accent-dark: #444768;
+    --button-disabled-dark: #2b2b40;
     --key-active-dark: #c1c2c9;
     --key-active-accent-dark: #888c9d;
     --sharpkey-active-dark: #3c3c3c;
@@ -39,11 +43,13 @@
         --container-accent: var(--container-accent-dark);
         --heading: var(--heading-dark);
         --text: var(--text-dark);
+        --text-disabled: var(--text-disabled-dark);
         --hover-accent: var(--hover-accent-dark);
         --button: var(--button-dark);
         --button-accent: var(--button-accent-dark);
         --button-active: var(--button-active-dark);
         --button-active-accent: var(--button-active-accent-dark);
+        --button-disabled: var(--button-disabled-dark);
         --hightlight: var(--highlight-dark);
         --key-active: var(--key-active-dark);
         --key-active-accent: var(--key-active-accent-dark);
@@ -59,11 +65,13 @@
         --container-accent: var(--container-accent-light);
         --heading: var(--heading-light);
         --text: var(--text-light);
+        --text-disabled: var(--text-disabled-light);
         --hover-accent: var(--hover-accent-light);
         --button: var(--button-light);
         --button-accent: var(--button-accent-light);
         --button-active: var(--button-active-light);
         --button-active-accent: var(--button-active-accent-light);
+        --button-disabled: var(--button-disabled-light);
         --hightlight: var(--highlight-light);
         --key-active: var(--key-active-light);
         --key-active-accent: var(--key-active-accent-light);
@@ -78,37 +86,38 @@
     --container-accent: var(--container-accent-dark);
     --heading: var(--heading-dark);
     --text: var(--text-dark);
+    --text-disabled: var(--text-disabled-dark);
     --hover-accent: var(--hover-accent-dark);
     --button: var(--button-dark);
     --button-accent: var(--button-accent-dark);
     --button-active: var(--button-active-dark);
     --button-active-accent: var(--button-active-accent-dark);
+    --button-disabled: var(--button-disabled-dark);
     --hightlight: var(--highlight-dark);
     --key-active: var(--key-active-dark);
     --key-active-accent: var(--key-active-accent-dark);
     --sharpkey-active: var(--sharpkey-active-dark);
-    --sharpkey-active-accent: var(--sharpkey-active-accent-dark);
-    
+    --sharpkey-active-accent: var(--sharpkey-active-accent-dark); 
 }
 
 .light {
-
     --background: var(--background-light);
     --container: var(--container-light);
     --container-accent: var(--container-accent-light);
     --heading: var(--heading-light);
     --text: var(--text-light);
+    --text-disabled: var(--text-disabled-light);
     --hover-accent: var(--hover-accent-light);
     --button: var(--button-light);
     --button-accent: var(--button-accent-light);
     --button-active: var(--button-active-light);
     --button-active-accent: var(--button-active-accent-light);
+    --button-disabled: var(--button-disabled-light);
     --hightlight: var(--highlight-light);
     --key-active: var(--key-active-light);
     --key-active-accent: var(--key-active-accent-light);
     --sharpkey-active: var(--sharpkey-active-light);
     --sharpkey-active-accent: var(--sharpkey-active-accent-light);
-
 }
 
 /* Elements */
@@ -136,6 +145,8 @@ body {
 }
 main {
     user-select: none;
+    position: relative;
+    z-index: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -343,6 +354,7 @@ a {
     right: 20px;
     gap: 10px;
     height: 34px;
+    z-index: 1;
 }
 
 #theme-btn {
@@ -568,18 +580,6 @@ a {
     align-items: center;
 }
 
-.power {
-    font-size: 2.5em;
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    padding: 0;
-}
-
-.bi-power::before {
-    cursor: pointer;
-}
-
 .knob-container{
     margin-top: 58px;
     width: fit-content;
@@ -686,6 +686,18 @@ a {
     height: 35px;
 }
 
+.form-button:active {
+    background-color: var(--button-active);
+    box-shadow: none;
+    margin-top: 0;
+}
+
+.form-button.disabled {
+    background-color: var(--button-disabled);
+    color: var(--text-disabled);
+    pointer-events: none;
+}
+
 .invalid-feedback {
     height: 30px;
     width: 100%;
@@ -700,3 +712,32 @@ a {
     padding-inline: 1em;
 }
 
+/* Popups */
+
+.popup {
+    background-color: var(--container);
+    padding: 30px;
+    border-radius: 20px;
+    position: relative;
+    text-align: center;
+    width: 300px;
+    height: fit-content;
+    transform: translate(-100px, -100px);
+    gap: 30px;
+}
+
+.overlay {
+    position: absolute;
+    z-index: 2;
+    background-color: var(--background);
+}
+
+.buttons-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.popup-btn {
+    width: 100%;
+}

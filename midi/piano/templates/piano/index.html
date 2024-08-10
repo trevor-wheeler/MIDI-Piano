@@ -17,7 +17,11 @@
       </div>
     </div>
 
-    <button class="button">Save Preset</button>
+    {% if user.is_authenticated %}
+    <button class="button" id="save-preset-btn">Save Preset</button>
+    {% else %}
+    <a href="{% url 'login' %}"><button class="button">Save Preset</button></a>
+    {% endif %}
     <button class="button">Clear</button>
     
   </div>
@@ -77,7 +81,6 @@
 
     <div class="effect-pedal">
       <h1 class="heading-font">Piano</h1>
-      <i class="power bi bi-power" data-turned-on="true" data-pedal="piano"></i>
       <div class="knob-handle-container">
         <span class="knob-handle" data-effect="attack" data-pedal="piano"></span>
         <span class="knob-handle" data-effect="release" data-pedal="piano"></span>
@@ -94,7 +97,6 @@
 
     <div class="effect-pedal">
       <h1 class="heading-font">Delay</h1>
-      <i class="power bi bi-power" data-turned-on="false" data-pedal="delay"></i>
       <div class="knob-handle-container">
         <span class="knob-handle" data-effect="timedelay" data-pedal="delay"></span>
         <span class="knob-handle" data-effect="feedback" data-pedal="delay"></span>
@@ -109,7 +111,6 @@
     
     <div class="effect-pedal">
       <h1 class="heading-font">Reverb</h1>
-      <i class="power bi bi-power" data-turned-on="false" data-pedal="reverb"></i>
       <div class="knob-handle-container">
         <span class="knob-handle" data-effect="predelay" data-pedal="reverb"></span>
         <span class="knob-handle" data-effect="decay" data-pedal="reverb"></span>
@@ -123,8 +124,7 @@
     </div>
 
     <div class="effect-pedal">
-      <h1 class="heading-font">Distort</h1>
-      <i class="power bi bi-power" data-turned-on="false" data-pedal="distort"></i>
+      <h1 class="heading-font">Distortion</h1>
       <div class="knob-handle-container">
         <span class="knob-handle" data-effect="distortion" data-pedal="distort"></span>
         <span class="knob-handle" data-effect="oversample" data-pedal="distort"></span>

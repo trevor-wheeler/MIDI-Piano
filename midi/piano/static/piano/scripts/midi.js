@@ -11,7 +11,7 @@ function main() {
     // Select all keys that arent hidden
     const keys = document.querySelectorAll('.key:not(.hidden)');
 
-    const powerBtns = document.querySelectorAll('.power');
+    const savePresetBtn = document.getElementById('save-preset-btn');
     const handles = document.querySelectorAll('.knob-handle');
     // Keep track of when the user isn't holding down the mouse
     var keyMouseDown = false;
@@ -122,17 +122,71 @@ function main() {
         });
     })
 
-    // Power button for each pedal
-    powerBtns.forEach(powerBtn => {
-        addEventListener('mousedown', () => {
-            let power = powerBtn.dataset.turnedOn;
-            // Toggle power
-            power === "true" ? powerBtn.dataset.turnedOn = false : powerBtn.dataset.turnedOn = true;
+    savePresetBtn.onclick = (event) => createPopup(event.target);
+}
 
-            // TODO
+function createPopup(element) {
+    let body = document.querySelector('main');
+    let popup = document.createElement('div');
+    popup.classList.add('centered-page', 'overlay');
+    popup.id = 'popup'
+
+    // Try to close any other popup windows 
+    try {
+        closePopup();
+    }
+    catch {
+        // Do nothing if theres no other popup windows open
+    }
+
+    // If the save preset button was clicked display the save preset form
+    if (element.id === 'save-preset-btn') {
+        popup.innerHTML = `<div class="popup flex-col">
+        <input class="text-input login-input" type="text" id="preset-name" placeholder="Preset name">
+        <div class="buttons-container">
+        <button class="button popup-btn form-button" id="cancel-btn">Cancel</button>
+        <button class="button popup-btn form-button disabled" id="save-btn">Save</button></div></div>`
+
+        body.append(popup);
+        let saveBtn = document.getElementById('save-btn');
+        let input = document.getElementById('preset-name');
+
+        // Dont let users save presets with empty name field
+        input.addEventListener('input', () => {
+            input.value.length === 0 ? saveBtn.classList.add('disabled') : saveBtn.classList.remove('disabled');
         });
-    });
+        saveBtn.addEventListener('click', savePreset);
+    }
+    // If the delete button was clicked display the confirmation form
+    else {
+        popup.innerHTML = `<div class="popup flex-col">
+        <span>Are you sure you want to delete ${element.textContent}?</span>
+        <div class="buttons-container">
+        <button class="button popup-btn form-button" id="cancel-btn">No</button>
+        <button class="button popup-btn form-button" id="confirm-btn">Yes</button></div></div>`
 
+        body.append(popup);
+        document.getElementById('confirm-btn').addEventListener('click', () => deletePreset(element.id));
+    }
+
+    document.getElementById('cancel-btn').addEventListener('click', closePopup);
+}
+
+function savePreset() {
+    // TODO
+
+    closePopup();
+}
+
+function deletePreset(id) {
+    // TODO
+
+    closePopup();
+}
+
+function closePopup() {
+    let popup = document.getElementById('popup');
+    popup.remove();
 }
 
 function onEnabled() {
