@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', main);
 
 import { samples } from './objects.js';
+import { createPopup } from './midi.js';
 
 // Instruments
 export const piano = new Tone.Sampler({
@@ -138,7 +139,66 @@ function volume() {
     })
 }
 
+function presets() {
+    const presets = document.querySelectorAll('.preset');
+    const icons = document.querySelectorAll('.trash');
+    
+    // If preset is active display fill icon else display regular icon
+    const toggleIcons = () => {
+        icons.forEach((icon, i) => {
+            icon.className = '';
+            presets[i].classList.contains('active') ? 
+            icon.classList.add('trash', 'bi', 'bi-trash3-fill') : 
+            icon.classList.add('trash', 'bi', 'bi-trash3');
+        })
+    }
+
+    presets.forEach(preset => {
+        preset.onclick = () => {
+            // If selected, unselect
+            if (preset.classList.contains('active')) {
+                preset.classList.remove('active');
+            }
+            // Deselect other presets if possible then select clicked preset
+            else {
+                presets.forEach(preset => preset.classList.contains('active') ? preset.classList.remove('active') : null);
+                preset.classList.add('active');
+                // Apply Preset here TODO
+            }
+            // Update icons
+            toggleIcons();
+        }
+    });
+
+    // For each trash icon
+    icons.forEach((icon, i) => {
+        // Update icons on hover
+        icon.addEventListener('mouseenter', () => {
+            icon.className = '';
+            // If preset is active dont change icon on mouse over else change icon on mouse over
+            presets[i].classList.contains('active') ? 
+            icon.classList.add('trash', 'bi', 'bi-trash3-fill') : 
+            icon.classList.add('trash', 'bi', 'bi-trash3-fill');
+        });
+        icon.addEventListener('mouseleave', () => {
+            icon.className = '';
+            // If preset is active dont change icon on mouse leave else change icon on mouse leave
+            presets[i].classList.contains('active') ? 
+            icon.classList.add('trash', 'bi', 'bi-trash3-fill') : 
+            icon.classList.add('trash', 'bi', 'bi-trash3');
+        });
+
+        // Display confirmation when trash icon is clicked
+        icon.onclick = (event) => {
+            event.stopPropagation();
+            createPopup(presets[i]);
+        }
+    });
+}
+
+// IDK why I did this? Kinda weird
 function main() {
     theme();
     volume();
+    presets();
 }

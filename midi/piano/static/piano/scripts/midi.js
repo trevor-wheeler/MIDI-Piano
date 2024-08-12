@@ -125,7 +125,7 @@ function main() {
     savePresetBtn.onclick = (event) => createPopup(event.target);
 }
 
-function createPopup(element) {
+export function createPopup(element) {
     let body = document.querySelector('main');
     let popup = document.createElement('div');
     popup.classList.add('centered-page', 'overlay');
