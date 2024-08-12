@@ -323,6 +323,7 @@ function handleAnimations(note, keyName, octave, event) {
 
     // If key is pressed down display animation
     if (event) {
+        key.style.transition = 'all 0.1s ease-in-out';
         key.classList.add('active');
         // Set the keys animation status to in progress for 300ms
         keyStatus[keyName].animationInProgress = true;
@@ -335,6 +336,8 @@ function handleAnimations(note, keyName, octave, event) {
             // Else continue checking animation status until its no longer in progress, then display next animation
             if (!keyStatus[keyName].animationInProgress) {
                 key.classList.remove('active');
+                // Wait 300 ms before removing transition
+                setTimeout(() => key.style.transition = 'none', 300);
                 clearInterval(interval);
             }
         }, 10);

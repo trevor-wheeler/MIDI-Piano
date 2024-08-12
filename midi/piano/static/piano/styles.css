@@ -522,7 +522,7 @@ a {
     cursor: pointer;
     -webkit-user-drag: none;
     user-select: none;
-    transition: all 0.1s ease-in-out;
+
 }
 
 .key.sharp {
@@ -532,7 +532,7 @@ a {
     border-radius: 0.39vw;
     box-shadow: 0px 0.58vw black;
     pointer-events: auto;
-    transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out, height 0.1s ease-in-out;
+
 }
 
 .key.active {

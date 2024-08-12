@@ -42,22 +42,20 @@ export const effectMap = {
     'distortionwet': (value) => distortion.wet.value = value
 }
 
-function theme() {
-    let theme = localStorage.getItem('theme');
+function getTheme() {
+    let theme;
 
-    // Find out what the users default theme is
-    if (theme === 'auto') {
-        // If default theme is dark set local storage to dark
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            localStorage.setItem('theme', 'dark');
-            theme = 'dark';
-        }
-        // If default theme is light set local storage to light
-        else {
-            localStorage.setItem('theme', 'light');
-            theme = 'light';
-        }
+    // If default theme is dark set local storage to dark
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        localStorage.setItem('theme', 'dark');
+        theme = 'dark';
     }
+    // If default theme is light set local storage to light
+    else {
+        localStorage.setItem('theme', 'light');
+        theme = 'light';
+    }
+
 
     // Update body to reflect theme
     document.body.classList.add(theme);
@@ -198,7 +196,7 @@ function presets() {
 
 // IDK why I did this? Kinda weird
 function main() {
-    theme();
+    getTheme();
     volume();
     presets();
 }
