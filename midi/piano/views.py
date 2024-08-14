@@ -10,6 +10,11 @@ def home(request):
     return render(request, "piano/index.html")
 
 def login_view(request):
+
+    # Log user out if they visit the login page while signed in
+    if request.user.is_authenticated:
+        logout(request)
+
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -75,30 +80,77 @@ def register_view(request):
         return render(request, "piano/register.html")
 
 # API
-def api(request, param1, param2):
-    # Check for username availability
-    if param1 == "username":
-        try:
-            user = User.objects.get(username__iexact=param2)
-        except User.DoesNotExist:
-            return JsonResponse({})
+def api(request, param, param2=None):
+    if request.method == 'GET':
+        
+        # Return a list of the users created presets
+        if param == "presets":
 
-        return JsonResponse({"error": "Username taken."})
+            if not request.user.is_authenticated:
+                return JsonResponse({})
 
-    # Create and delete presets
-    elif param1 == "preset":
-        preset = json.loads(request.body.decode('utf-8'))
+            # Query database for users created presets
+            presets = Preset.objects.filter(creator=request.user)
+            
+            # Create a new object relating preset IDs to preset names
+            presetsData = {}
+            for preset in presets:
+                presetsData[preset.id] = preset.name
 
-        # Save preset to database
-        if param2 == "create":
+            # Return new Object
+            return JsonResponse(presetsData)
+
+        # Get preset knob values
+        else:
+             preset = Preset.objects.get(id=param)
+             print(request.path)
+             return JsonResponse(preset.knobValues)
+        
+    elif request.method == 'POST':
+
+        # Create and delete presets
+        if param == "preset":
+            # Convert request body into python dict
+            preset = json.loads(request.body.decode('utf-8'))
+
+            # Create new database entry using the request body
             newPreset = Preset(
                 name=preset['name'],
                 knobValues=preset['values'],
                 creator=request.user
             )
             newPreset.save()
-            return HttpResponse(status=200)
 
+            # Grab the new preset
+            instance = Preset.objects.filter(creator=request.user).latest('id')
+
+            return JsonResponse({"id": instance.id})
+
+    elif request.method == 'DELETE':
+        
         # Delete preset from database
-        elif param2 =="delete":
-            pass # TODO
+        if param == "preset":
+            # Get preset ID from request body and convert it
+            preset = json.loads(request.body.decode('utf-8'))
+
+            # Select preset from database
+            instance = Preset.objects.get(id=preset)
+
+            # If the user that made the request is the creator of the preset return 200
+            if instance.creator == request.user:
+                instance.delete()
+                return HttpResponse(status=200)
+            # Else return 304
+            else:
+                return HttpResponse(status=304)
+
+def checkUsername(request, param):
+    # Check for username availability
+        try:
+            # Try to get select username from database
+            user = User.objects.get(username__iexact=param)
+        except User.DoesNotExist:
+            # If username doesn't exit return empty JSON object
+            return JsonResponse({})
+        # If user does exist return error
+        return JsonResponse({"error": "Username taken."})

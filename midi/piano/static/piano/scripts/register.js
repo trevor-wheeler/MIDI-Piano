@@ -49,7 +49,7 @@ function main() {
         // Check server for username availability
         if (!usernameBox.classList.contains('is-valid') && !usernameBox.classList.contains('is-invalid')) {
             if (username) {
-                fetch(`api/username/${username}`)
+                fetch(`api/user/${username}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {

@@ -1,32 +1,33 @@
-
-// Wait for DOM to load before executing main function
-document.addEventListener('DOMContentLoaded', main);
+if (window.location.pathname === '/') {
+    // Wait for DOM to load before executing main function
+    document.addEventListener('DOMContentLoaded', main);
+}
 
 // GLOBAL
 import { keyStatus, knobSettings } from './objects.js';
-import { piano, effectMap } from './main.js';
+import { piano, effectMap, createPopup } from './main.js';
+var keyMouseDown = false;
+var knobMouseDown = false;
+var x;
+var y;
 
 function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
     // Select all keys that arent hidden
     const keys = document.querySelectorAll('.key:not(.hidden)');
 
-    const savePresetBtn = document.getElementById('save-preset-btn');
     const handles = document.querySelectorAll('.knob-handle');
+    const savePresetBtn = document.getElementById('save-preset-btn');
     // Keep track of when the user isn't holding down the mouse
-    var keyMouseDown = false;
-    var knobMouseDown = false;
     document.addEventListener('mouseup', () => {
         keyMouseDown = false;
         knobMouseDown = false;
         document.body.style.cursor = 'default';
     });
     // Keep track of the cursor position
-    var x;
-    var y;
     document.addEventListener('mousemove', event => {
         x = event.clientX;
-        y = event.clientY
+        y = event.clientY;
     })
     
     // For each key
@@ -64,149 +65,94 @@ function main() {
         });
     });
 
-    // For each knob
+    // For each handle
     handles.forEach(handle => {
-        var effect = handle.dataset.effect;
-        var pedal = handle.dataset.pedal;
-        var knob = document.getElementById(pedal + effect);
-        var knobValue = parseInt(knob.getAttribute('value'));
 
-        // Grab effect data from local storage
-        if (localStorage.getItem(pedal + effect) !== null) {
-            knobValue = localStorage.getItem(knob.id);
-        }
-        else {
-            localStorage.setItem(knob.id, knobValue);
-        }
-
-        // Update knobs to display correct values
-        knob.setAttribute('value', knobValue);
-        var translatedValue = translateKnobs(handle, knob, knobValue);
-        applyEffects(translatedValue, knob);
-    
-        // Listen for click
-        handle.addEventListener('mousedown', () => {
-            // Get the users cursor position
-            let initialY = y;
-            let movement;
-            knobValue = parseInt(knob.getAttribute('value'));
-
-            knobMouseDown = true;
-            document.body.style.cursor = 'pointer';
-            knob.style.setProperty('--dg-arc-color', 'var(--button-active)');
-        
-            // Run this loop until the user lifts up on their mouse
-            let interval = setInterval(() => {
-                if (knobMouseDown) {
-                    // Difference between the starting cursor position and the current cursor position
-                    movement = initialY - y + knobValue;
-                    // Dont let the difference be greater than 200 or less than 0
-                    if (movement > 200) {
-                        movement = 200;
-                    }
-                    else if (movement < 0) {
-                        movement = 0;
-                    }
-        
-                    // Update the knob to display the new value
-                    knob.setAttribute('value', movement);
-                    translatedValue = translateKnobs(handle, knob, movement);
-                }
-                else {
-                    knob.style.setProperty('--dg-arc-color', 'var(--button)');
-                    localStorage.setItem(knob.id, movement);
-                    applyEffects(translatedValue, knob);
-                    clearInterval(interval);
-                }
-            }, 10);
-        });
+        // When knob is clicked handle the click control
+        handle.addEventListener('mousedown', () => knobClickControl(handle));
     })
 
     savePresetBtn.onclick = (event) => createPopup(event.target);
 }
 
-export function createPopup(element) {
-    let body = document.querySelector('main');
-    let popup = document.createElement('div');
-    popup.classList.add('centered-page', 'overlay');
-    popup.id = 'popup'
+function knobClickControl(handle) {
+    var knob = document.getElementById(handle.dataset.pedal + handle.dataset.effect);
 
-    // Try to close any other popup windows 
-    try {
-        closePopup();
-    }
-    catch {
-        // Do nothing if theres no other popup windows open
-    }
+    // Get the users cursor position
+    let initialY = y;
+    let movement;
+    var translatedValue;
+    var knobValue = parseInt(knob.getAttribute('value'));
 
-    // If the save preset button was clicked display the save preset form
-    if (element.id === 'save-preset-btn') {
-        popup.innerHTML = `<div class="popup flex-col">
-        <input class="text-input login-input" type="text" id="preset-name" placeholder="Preset name">
-        <div class="buttons-container">
-        <button class="button popup-btn form-button" id="cancel-btn">Cancel</button>
-        <button class="button popup-btn form-button disabled" id="save-btn">Save</button></div></div>`
+    knobMouseDown = true;
+    document.body.style.cursor = 'pointer';
+    knob.style.setProperty('--dg-arc-color', 'var(--button-active)');
 
-        body.append(popup);
-        let saveBtn = document.getElementById('save-btn');
-        let input = document.getElementById('preset-name');
+    // Run this loop until the user lifts up on their mouse
+    let interval = setInterval(() => {
+        if (knobMouseDown) {
+            // Difference between the starting cursor position and the current cursor position
+            movement = initialY - y + knobValue;
+            // Dont let the knob movement be greater than 200 or less than 0
+            if (movement > 200) {
+                movement = 200;
+            }
+            else if (movement < 0) {
+                movement = 0;
+            }
+        
+            // Update the knob to display the new value
+            knob.setAttribute('value', movement);
+            translatedValue = translateKnobs(handle, knob, movement);
+        }
+        else {
+            knob.style.setProperty('--dg-arc-color', 'var(--button)');
+            // If preset is not selected update local storage
+            localStorage.getItem('preset') === 'none' ? localStorage.setItem(knob.id, movement) : null;
+            // Unless its the octave knob
+            knob.id === 'pianooctave' ? localStorage.setItem(knob.id, movement) : null;
+            applyEffects(translatedValue, knob);
+            clearInterval(interval);
+        }
+    }, 10);
+}
 
-        // Dont let users save presets with empty name field
-        input.addEventListener('input', () => {
-            input.value.length === 0 ? saveBtn.classList.add('disabled') : saveBtn.classList.remove('disabled');
+export function updateKnobs(handles, presets) {
+    if (handles) {
+        // For each knob
+        handles.forEach(handle => {
+            var knob = document.getElementById(handle.dataset.pedal + handle.dataset.effect);
+            var knobValue = parseInt(knob.getAttribute('value'));
+
+            // If there is not a preset selected get knob values from local storage
+            if (localStorage.getItem('preset') === 'none') {
+                // If there are no knob values in local storage create them 
+                localStorage.getItem(knob.id) !== null ?
+                knobValue = localStorage.getItem(knob.id) : 
+                localStorage.setItem(knob.id, knobValue);
+            }
+            // If there is a preset selected try to get the knob values from the preset
+            else {
+                // If the preset doesn't contain a value for the knob use the value from local storage
+                knobValue = presets[knob.id] || localStorage.getItem(knob.id);
+            }
+
+            // Update knob curve
+            knob.setAttribute('value', knobValue);
+            // Update knob label and return translated value
+            var translatedValue = translateKnobs(handle, knob, knobValue);
+            // Apply the translated value to the effect pedal
+            applyEffects(translatedValue, knob);
         });
-        saveBtn.addEventListener('click', () => savePreset(input));
     }
-    // If the delete button was clicked display the confirmation form
     else {
-        popup.innerHTML = `<div class="popup flex-col">
-        <span>Are you sure you want to delete ${element.textContent}?</span>
-        <div class="buttons-container">
-        <button class="button popup-btn form-button" id="cancel-btn">No</button>
-        <button class="button popup-btn form-button" id="confirm-btn">Yes</button></div></div>`
-
-        body.append(popup);
-        document.getElementById('confirm-btn').addEventListener('click', () => deletePreset(element.id));
+        const handles = document.querySelectorAll('.knob-handle');
+        handles.forEach(handle => {
+            var knob = document.getElementById(handle.dataset.pedal + handle.dataset.effect);
+            knob.setAttribute('value', 0);
+            translateKnobs(handle, knob, 0);
+        });
     }
-
-    document.getElementById('cancel-btn').addEventListener('click', closePopup);
-}
-
-function savePreset(input) {
-    var preset = {};
-    var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-    preset.values = {};
-    preset.name = input.value;
-
-    for (let effect in effectMap) {
-        preset.values[effect] = localStorage.getItem(effect);
-    }
-
-    fetch('api/preset/create', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken
-        },
-        body: JSON.stringify(preset)
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-    closePopup();
-}
-
-function deletePreset(id) {
-    // TODO
-
-    closePopup();
-}
-
-function closePopup() {
-    let popup = document.getElementById('popup');
-    popup.remove();
 }
 
 function onEnabled() {
@@ -298,6 +244,7 @@ function instrument(note, keyName, octave, event) {
         Tone.start();
     }
 
+    // Dont handle animation or trigger attack for keys out of range
     if (octave < 1 || octave > 7 && note !== 'C' ) {
         return
     }
@@ -345,7 +292,7 @@ function handleAnimations(note, keyName, octave, event) {
 
 }
 
-function translateKnobs(handle, knob, knobValue) {
+export function translateKnobs(handle, knob, knobValue) {
     let config = knobSettings[knob.id];
 
     // Adjust effect range to fit knob range
@@ -384,7 +331,7 @@ function translateKnobs(handle, knob, knobValue) {
     return unformatted;
 }
 
-function applyEffects(value, knob) {
+export function applyEffects(value, knob) {
     const keys = document.querySelectorAll('.key:not(.hidden)');
 
     // Adjust percentage to normal range

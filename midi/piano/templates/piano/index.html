@@ -82,25 +82,25 @@
     <div class="effect-pedal">
       <h1 class="heading-font">Piano</h1>
       <div class="knob-handle-container">
-        <span class="knob-handle" data-effect="attack" data-pedal="piano"></span>
-        <span class="knob-handle" data-effect="release" data-pedal="piano"></span>
-        <span class="knob-handle" data-effect="curve" data-pedal="piano"></span>
-        <span class="knob-handle" data-effect="octave" data-pedal="piano"></span>
+        <span class="knob-handle" id="pianoattack-handle" data-effect="attack" data-pedal="piano"></span>
+        <span class="knob-handle" id="pianorelease-handle" data-effect="release" data-pedal="piano"></span>
+        <span class="knob-handle" id="pianocurve-handle" data-effect="curve" data-pedal="piano"></span>
+        <span class="knob-handle" id="pianooctave-handle" data-effect="octave" data-pedal="piano"></span>
       </div>
       <div class="knob-container">
         <dial-gauge class="knob" id="pianoattack" scale-start="0" scale-end="200" value="0" sub-title="Attack"></dial-gauge>
         <dial-gauge class="knob" id="pianorelease" scale-start="0" scale-end="200" value="0" sub-title="Release"></dial-gauge>
         <dial-gauge class="knob" id="pianocurve" scale-start="0" scale-end="200" value="0" sub-title="Curve"></dial-gauge>
-        <dial-gauge class="knob" id="pianooctave" scale-start="0" scale-end="200" value="0" sub-title="Octave"></dial-gauge>
+        <dial-gauge class="knob" id="pianooctave" scale-start="0" scale-end="200" value="25" sub-title="Octave"></dial-gauge>
       </div>
     </div>
 
     <div class="effect-pedal">
       <h1 class="heading-font">Delay</h1>
       <div class="knob-handle-container">
-        <span class="knob-handle" data-effect="delaytime" data-pedal="delay"></span>
-        <span class="knob-handle" data-effect="feedback" data-pedal="delay"></span>
-        <span class="knob-handle" data-effect="wet" data-pedal="delay"></span>
+        <span class="knob-handle" id="delaydelaytime-handle" data-effect="delaytime" data-pedal="delay"></span>
+        <span class="knob-handle" id="delayfeedback-handle" data-effect="feedback" data-pedal="delay"></span>
+        <span class="knob-handle" id="delaywet-handle" data-effect="wet" data-pedal="delay"></span>
       </div>
       <div class="knob-container">
         <dial-gauge class="knob" id="delaydelaytime" scale-start="0" scale-end="200" value="0" sub-title="Time"></dial-gauge>
@@ -112,9 +112,9 @@
     <div class="effect-pedal">
       <h1 class="heading-font">Reverb</h1>
       <div class="knob-handle-container">
-        <span class="knob-handle" data-effect="predelay" data-pedal="reverb"></span>
-        <span class="knob-handle" data-effect="decay" data-pedal="reverb"></span>
-        <span class="knob-handle" data-effect="wet" data-pedal="reverb"></span>
+        <span class="knob-handle" id="reverbpredelay-handle" data-effect="predelay" data-pedal="reverb"></span>
+        <span class="knob-handle" id="reverbdecay-handle" data-effect="decay" data-pedal="reverb"></span>
+        <span class="knob-handle" id="reverbwet-handle" data-effect="wet" data-pedal="reverb"></span>
       </div>
       <div class="knob-container">
         <dial-gauge class="knob" id="reverbpredelay" scale-start="0" scale-end="200" value="0" sub-title="PreDelay"></dial-gauge>
@@ -126,9 +126,9 @@
     <div class="effect-pedal">
       <h1 class="heading-font">Distortion</h1>
       <div class="knob-handle-container">
-        <span class="knob-handle" data-effect="distortion" data-pedal="distortion"></span>
-        <span class="knob-handle" data-effect="oversample" data-pedal="distortion"></span>
-        <span class="knob-handle" data-effect="wet" data-pedal="distortion"></span>
+        <span class="knob-handle" id="distortiondistortion-handle" data-effect="distortion" data-pedal="distortion"></span>
+        <span class="knob-handle" id="distortionoversample-handle" data-effect="oversample" data-pedal="distortion"></span>
+        <span class="knob-handle" id="distortionwet-handle" data-effect="wet" data-pedal="distortion"></span>
       </div>
       <div class="knob-container">
         <dial-gauge class="knob" id="distortiondistortion" scale-start="0" scale-end="200" value="0" sub-title="Distortion"></dial-gauge>
