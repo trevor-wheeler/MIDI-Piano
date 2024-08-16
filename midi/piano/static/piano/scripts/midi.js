@@ -67,16 +67,52 @@ function main() {
 
     // For each handle
     handles.forEach(handle => {
+        var knob = document.getElementById(handle.dataset.pedal + handle.dataset.effect);
 
         // When knob is clicked handle the click control
-        handle.addEventListener('mousedown', () => knobClickControl(handle));
+        handle.addEventListener('mousedown', () => knobClickControl(handle, knob));
+
+        let scrolling;
+        handle.addEventListener('wheel', (event) => {
+            // Prevent default scroll behavior
+            event.preventDefault();
+            // Reset Timeout if scrolling continues
+            clearTimeout(scrolling);
+
+            knob.style.setProperty('--dg-arc-color', 'var(--button-active)');
+            var knobValue = parseInt(knob.getAttribute('value'));
+            var translatedValue;
+
+            // Move knob in intervals of 5
+            if (event.deltaY > 0 && knobValue > 0) {
+                knobValue -= 5;
+                knobValue < 0 ? knobValue = 0: null;
+            } else if (event.deltaY < 0 && knobValue < 200) {
+                knobValue += 5;
+                knobValue > 200 ? knobValue = 200: null;
+            }
+
+            // Update knob curve
+            knob.setAttribute('value', knobValue);
+            // Update knob labels and return formatted value
+            translatedValue = translateKnobs(handle, knob, knobValue);
+
+            // If scrolling stops for 300ms apply effects
+            scrolling = setTimeout(() => {
+                knob.style.setProperty('--dg-arc-color', 'var(--button)')
+                // If preset is not selected update local storage
+                localStorage.getItem('preset') === 'none' ? localStorage.setItem(knob.id, knobValue) : null;
+                // Unless its the octave knob
+                knob.id === 'pianooctave' ? localStorage.setItem(knob.id, knobValue) : null;
+                applyEffects(translatedValue, knob);
+            }, 300);
+        });
     })
 
     savePresetBtn.onclick = (event) => createPopup(event.target);
 }
 
-function knobClickControl(handle) {
-    var knob = document.getElementById(handle.dataset.pedal + handle.dataset.effect);
+function knobClickControl(handle, knob) {
 
     // Get the users cursor position
     let initialY = y;
