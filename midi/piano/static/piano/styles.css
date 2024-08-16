@@ -757,3 +757,10 @@ a {
 .popup-btn {
     width: 100%;
 }
+
+/* Account page */
+
+.update-password {
+    width: 350px;
+    height: 420px;
+}

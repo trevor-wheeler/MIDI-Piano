@@ -1,0 +1,35 @@
+{% extends "piano/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+<script src="{% static 'piano/scripts/account.js' %}"></script>
+{% endblock %}
+
+{% block title %}
+Account
+{% endblock %}
+
+{% block body %}
+<main class="centered-page">
+  <div class="flex-col update-password" id="login-container">
+    <h1 class="heading-font">Update password</h1>
+
+    <form class="login-form flex-col" action="{% url 'account' %}" method="post">
+      {% csrf_token %}
+      <input class="text-input login-input" type="password" name="password" id="password" placeholder="Password">
+      {%  if error|default:"" %}
+      <div id="password-feedback" class="invalid-feedback">Incorrect password.</div>
+      {%  else %}
+      <div id="password-feedback" class="invalid-feedback"></div>
+      {%  endif %}
+      <input class="text-input login-input" type="password" name="new-password" id="new-password" placeholder="New Password">
+      <div id="new-password-feedback" class="invalid-feedback"></div>
+      <input class="text-input login-input" type="password" name="confirm-new-password" id="confirm-new-password" placeholder="Confirm New Password">
+      <div id="confirm-new-password-feedback" class="invalid-feedback"></div>
+      <input class="button form-button" type="submit" value="Save">
+    </form>
+    
+  </div>
+</main>
+{% endblock %}

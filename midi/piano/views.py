@@ -79,6 +79,41 @@ def register_view(request):
     else:
         return render(request, "piano/register.html")
 
+def account(request):
+    if request.method == "POST":
+        password = request.POST["password"]
+        newPassword = request.POST["new-password"]
+        confirmNewPassword = request.POST["confirm-new-password"]
+
+        # Check for password consistency
+        if newPassword != confirmNewPassword:
+            return render(request, "piano/account.html")
+
+        # Check to see if old password matches
+        if request.user.check_password(password):
+            request.user.set_password(newPassword)
+            request.user.save()
+            return HttpResponseRedirect(reverse("login"))
+        # Password is incorrect
+        else:
+            return render(request, "piano/account.html", {
+                "error": "Incorrect password."
+            })
+    else:
+        if request.user.is_authenticated:
+            return render(request, "piano/account.html")
+        # If user is not logged in redirect them to the login page
+        else:
+            return HttpResponseRedirect(reverse("login"))
+
+def presets(request):
+    if request.user.is_authenticated:
+        return render(request, "piano/presets.html")
+    # If user is not logged in redirect them to the login page
+    else:
+        return HttpResponseRedirect(reverse("login"))
+        
+
 # API
 def api(request, param, param2=None):
     if request.method == 'GET':

@@ -19,7 +19,7 @@ Login
       {% csrf_token %}
       {% if error|default:"" %}
       <input class="text-input login-input is-invalid" type="text" name="username" id="username" placeholder="Username">
-      <div class="invalid-feedback">Incorrect username or password.</div>
+      <div class="invalid-feedback"></div>
       <input class="text-input login-input is-invalid" type="password" name="password" id="password" placeholder="Password">
       <div class="invalid-feedback">Incorrect username or password.</div>
       {% else %}
