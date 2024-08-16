@@ -18,6 +18,8 @@ function main() {
 
     const handles = document.querySelectorAll('.knob-handle');
     const savePresetBtn = document.getElementById('save-preset-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const defaultBtn = document.getElementById('default-btn');
     // Keep track of when the user isn't holding down the mouse
     document.addEventListener('mouseup', () => {
         keyMouseDown = false;
@@ -110,6 +112,8 @@ function main() {
     })
 
     savePresetBtn.onclick = (event) => createPopup(event.target);
+    clearBtn.onclick = () => getLocalPreset('clear');
+    defaultBtn.onclick = () => getLocalPreset('default');
 }
 
 function knobClickControl(handle, knob) {
@@ -156,16 +160,22 @@ function knobClickControl(handle, knob) {
 export function updateKnobs(handles, presets) {
     if (handles) {
         // For each knob
-        handles.forEach(handle => {
-            var knob = document.getElementById(handle.dataset.pedal + handle.dataset.effect);
+        for (let i = 0; i < handles.length; i++) {
+            var knob = document.getElementById(handles[i].dataset.pedal + handles[i].dataset.effect);
             var knobValue = parseInt(knob.getAttribute('value'));
 
             // If there is not a preset selected get knob values from local storage
-            if (localStorage.getItem('preset') === 'none') {
-                // If there are no knob values in local storage create them 
-                localStorage.getItem(knob.id) !== null ?
-                knobValue = localStorage.getItem(knob.id) : 
-                localStorage.setItem(knob.id, knobValue);
+            if (!presets) {
+                if (localStorage.getItem(knob.id) !== null) {
+                    knobValue = localStorage.getItem(knob.id)
+                }
+                else {
+                    // If there are no knob values in local storage call getLocalPreset to get them
+                    getLocalPreset('defaultWithOctave');
+                    break;
+                }
+
+
             }
             // If there is a preset selected try to get the knob values from the preset
             else {
@@ -176,11 +186,12 @@ export function updateKnobs(handles, presets) {
             // Update knob curve
             knob.setAttribute('value', knobValue);
             // Update knob label and return translated value
-            var translatedValue = translateKnobs(handle, knob, knobValue);
+            var translatedValue = translateKnobs(handles[i], knob, knobValue);
             // Apply the translated value to the effect pedal
             applyEffects(translatedValue, knob);
-        });
+        }
     }
+    // If they updateKnobs function is called with no arguments set all knobs to 0
     else {
         const handles = document.querySelectorAll('.knob-handle');
         handles.forEach(handle => {
@@ -390,4 +401,30 @@ export function applyEffects(value, knob) {
     else {
         effectMap[knob.id](value);
     }
+}
+
+function getLocalPreset(preset) {
+    fetch('static/piano/config.json')
+     // Convert response to JSON
+    .then(response => response.json())
+    .then(data => {
+        // If any presets are selected unselect them
+        localStorage.setItem('preset', 'none');
+        const presets = document.querySelectorAll('.preset');
+        presets.forEach(preset => {
+            preset.classList.contains('active') ? preset.classList.remove('active') : null;
+        })
+
+        // Select preset in config
+        preset = data.presets[preset];
+        // Update local storage
+        for (let effect in preset) {
+            localStorage.setItem(effect, preset[effect])
+        }
+        
+        // Update knobs
+        const handles = document.querySelectorAll('.knob-handle');
+        updateKnobs(handles, preset);
+    })
+    .catch(error => console.error('Error:', error));
 }

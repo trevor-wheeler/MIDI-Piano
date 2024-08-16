@@ -10,19 +10,13 @@
       <div class="dropdown-menu" id="devices"></div>
     </div>
 
-    <div class="dropdown">
-      <button class="dropdown-toggle button" data-bs-toggle="dropdown">Instrument: Piano</button>
-      <div class="dropdown-menu">
-        <button class="text dropdown-item active">Piano</button>
-      </div>
-    </div>
-
     {% if user.is_authenticated %}
     <button class="button" id="save-preset-btn">Save Preset</button>
     {% else %}
     <a href="{% url 'login' %}"><button class="button" id="save-preset-btn">Save Preset</button></a>
     {% endif %}
-    <button class="button">Clear</button>
+    <button class="button" id="default-btn">Load default</button>
+    <button class="button" id="clear-btn">Clear</button>
     
   </div>
 
@@ -91,7 +85,7 @@
         <dial-gauge class="knob" id="pianoattack" scale-start="0" scale-end="200" value="0" sub-title="Attack"></dial-gauge>
         <dial-gauge class="knob" id="pianorelease" scale-start="0" scale-end="200" value="0" sub-title="Release"></dial-gauge>
         <dial-gauge class="knob" id="pianocurve" scale-start="0" scale-end="200" value="0" sub-title="Curve"></dial-gauge>
-        <dial-gauge class="knob" id="pianooctave" scale-start="0" scale-end="200" value="25" sub-title="Octave"></dial-gauge>
+        <dial-gauge class="knob" id="pianooctave" scale-start="0" scale-end="200" value="0" sub-title="Octave"></dial-gauge>
       </div>
     </div>
 

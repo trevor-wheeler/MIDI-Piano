@@ -1,0 +1,47 @@
+{
+    "presets": {
+        "default": {
+            "pianoattack": "0",
+            "pianorelease": "19",
+            "pianocurve": "100",
+            "delaydelaytime": "50",
+            "delayfeedback": "100",
+            "delaywet": "0",
+            "reverbpredelay": "1",
+            "reverbdecay": "9",
+            "reverbwet": "0",
+            "distortiondistortion": "80",
+            "distortionoversample": "0",
+            "distortionwet": "0"
+        },
+        "defaultWithOctave": {
+            "pianoattack": "0",
+            "pianorelease": "19",
+            "pianocurve": "100",
+            "pianooctave": "25",
+            "delaydelaytime": "50",
+            "delayfeedback": "100",
+            "delaywet": "0",
+            "reverbpredelay": "1",
+            "reverbdecay": "9",
+            "reverbwet": "0",
+            "distortiondistortion": "80",
+            "distortionoversample": "0",
+            "distortionwet": "0"
+        },
+        "clear": {
+            "pianoattack": "0",
+            "pianorelease": "0",
+            "pianocurve": "0",
+            "delaydelaytime": "0",
+            "delayfeedback": "0",
+            "delaywet": "0",
+            "reverbpredelay": "0",
+            "reverbdecay": "0",
+            "reverbwet": "0",
+            "distortiondistortion": "0",
+            "distortionoversample": "0",
+            "distortionwet": "0"
+        }
+    }
+}
