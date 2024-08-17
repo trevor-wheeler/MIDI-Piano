@@ -18,6 +18,7 @@ function main() {
     
     // Select all keys that arent hidden
     const keys = document.querySelectorAll('.key:not(.hidden)');
+    const mobileKeys = document.querySelectorAll('.mobile-key:not(.hidden)')
 
     const handles = document.querySelectorAll('.knob-handle');
     const savePresetBtn = document.getElementById('save-preset-btn');
@@ -42,31 +43,39 @@ function main() {
 
         // When clicked play note
         key.addEventListener('mouseenter', () => {
-            note = key.getAttribute('data-note');
             octave = key.getAttribute('data-octave');
-
             keyMouseDown && instrument(note, note+octave, parseInt(octave), true)
         });
         key.addEventListener('mousedown', () => {
-            note = key.getAttribute('data-note');
             octave = key.getAttribute('data-octave');
-
             keyMouseDown = true;
             instrument(note, note+octave, parseInt(octave), true);
         });
 
         // When mouse button is released release the note
         key.addEventListener('mouseleave', () => {
-            note = key.getAttribute('data-note');
             octave = key.getAttribute('data-octave');
-
             keyMouseDown && instrument(note, note+octave, parseInt(octave), false)
         });
         key.addEventListener('mouseup', () => {
-            note = key.getAttribute('data-note');
-            octave= key.getAttribute('data-octave');
-        
+            octave = key.getAttribute('data-octave');
             instrument(note, note+octave, parseInt(octave), false)
+        });
+    });
+
+    // For each mobile key
+    mobileKeys.forEach(key => {
+        let note = key.getAttribute('data-note');
+        let octave = key.getAttribute('data-octave');
+
+        // When touched play note
+        key.addEventListener('touchstart', () => {
+            instrument(note, note+octave, parseInt(octave), true);
+        });
+
+        // When touch ends release note 
+        key.addEventListener('touchend', () => {
+            instrument(note, note+octave, parseInt(octave), false);
         });
     });
 
@@ -314,7 +323,16 @@ function instrument(note, keyName, octave, event) {
 }
 
 function handleAnimations(note, keyName, octave, event) {
-    var key = document.querySelector(`[data-note="${note}"][data-octave="${octave}"]`);
+    var key;
+    
+    // If user is on desktop select desktop keys
+    if (window.innerWidth > 1200) {
+        key = document.querySelector(`.key[data-note="${note}"][data-octave="${octave}"]`);
+    }
+    // If user is on mobile select mobile keys
+    else {
+        key = document.querySelector(`.mobile-key[data-note="${note}"][data-octave="${octave}"]`);
+    }
 
     // Only display animation for keys in visible octave
     if (!key) {
@@ -447,7 +465,7 @@ function updateOrientation() {
         // Display piano vertically
         mobilePianoElements.forEach(element => element.classList.add('vertical'));
         // If window width is greater than 428px change the width of the piano to be fixed
-        if (window.innerWidth > 428) {
+        if (window.innerWidth > 431) {
             mobilePiano.style.width = `${mobilePiano.offsetHeight * 0.35}px`;
         }
     // If window width is greator than window height
