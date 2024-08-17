@@ -13,6 +13,9 @@ var y;
 
 function main() {
     WebMidi.enable().then(onEnabled).catch(err => alert(err));
+    
+    updateOrientation();
+    
     // Select all keys that arent hidden
     const keys = document.querySelectorAll('.key:not(.hidden)');
 
@@ -114,6 +117,9 @@ function main() {
     savePresetBtn.onclick = (event) => createPopup(event.target);
     clearBtn.onclick = () => getLocalPreset('clear');
     defaultBtn.onclick = () => getLocalPreset('default');
+
+    // Update the orientation when the window is resized
+    window.addEventListener('resize', updateOrientation);
 }
 
 function knobClickControl(handle, knob) {
@@ -427,4 +433,30 @@ function getLocalPreset(preset) {
         updateKnobs(handles, preset);
     })
     .catch(error => console.error('Error:', error));
+}
+
+function updateOrientation() {
+    const mobilePianoElements = document.querySelectorAll('.mobile-piano, .mobile-key');
+    const mobilePiano = document.getElementById('mobile-piano-container');
+
+    // Remove previous width and height inline styling
+    mobilePiano.removeAttribute('style');
+
+    // If window width is less than window height
+    if (window.innerWidth < window.innerHeight) {
+        // Display piano vertically
+        mobilePianoElements.forEach(element => element.classList.add('vertical'));
+        // If window width is greater than 428px change the width of the piano to be fixed
+        if (window.innerWidth > 428) {
+            mobilePiano.style.width = `${mobilePiano.offsetHeight * 0.35}px`;
+        }
+    // If window width is greator than window height
+    } else {
+        // Display piano horizontally
+        mobilePianoElements.forEach(element => element.classList.remove('vertical'));
+        // If window height is greater than 428px change the height of the piano to be fixed
+        if (window.innerHeight > 428) {
+            mobilePiano.style.height = `${mobilePiano.offsetWidth * 0.35}px`;
+        }
+    }
 }

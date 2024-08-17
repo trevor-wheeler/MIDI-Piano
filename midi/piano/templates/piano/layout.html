@@ -26,7 +26,7 @@
 </head>
 <body>
   {% csrf_token %}
-  <nav id="nav">
+  <nav id="nav" class="desktop">
     <div id="logo-container">
       <svg id="logo" viewBox="0 0 900.000000 900.000000"><g transform="translate(0.000000,900.000000) scale(0.100000,-0.100000)" stroke="none"><path d="M0 4500 l0 -4500 940 0 940 0 0 2125 0 2125 -219 0 c-121 0 -226 3 -235 6 -15 6 -16 224 -16 2375 l0 2369 -705 0 -705 0 0 -4500z"/><path d="M2828 6628 l-3 -2373 -232 -3 -233 -2 0 -2125 0 -2125 945 0 945 0 0 2125 0 2125 -232 2 -233 3 -3 2373 -2 2372 -475 0 -475 0 -2 -2372z"/><path d="M5198 6628 l-3 -2373 -232 -3 -233 -2 0 -2125 0 -2125 945 0 945 0 0 2125 0 2125 -232 2 -233 3 -3 2373 -2 2372 -475 0 -475 0 -2 -2372z"/><path d="M7570 6631 c0 -2151 -1 -2369 -16 -2375 -9 -3 -114 -6 -235 -6 l-219 0 0 -2125 0 -2125 950 0 950 0 0 4500 0 4500 -715 0 -715 0 0 -2369z"/></g></svg> 
       <h1 class="heading-font" id="title">MIDI Piano</h1>
@@ -39,7 +39,7 @@
     <input id="preset-searchbar" class="text-input" type="text" placeholder="Search Presets">
     <ul id="presets"></ul>
   </nav>
-  <div id="login-btns">
+  <div id="login-btns" class="desktop">
     <div id="volume-container">
       <input type="range" class="range" id="volume-slider" min="0" max="25" value="25">
       <i class="bi bi-volume-down-fill" id="volume-icon"></i>

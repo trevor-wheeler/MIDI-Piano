@@ -4,7 +4,7 @@
 {% block body %}
 <main class="max-width flex-col">
 
-  <div id="head-nav"> 
+  <div id="head-nav" class="desktop"> 
     <div class="dropdown">
       <button class="dropdown-toggle button" id="midi-btn" data-bs-toggle="dropdown">MIDI: None</button>
       <div class="dropdown-menu" id="devices"></div>
@@ -20,7 +20,7 @@
     
   </div>
 
-  <div id="piano-container">
+  <div id="piano-container" class="desktop">
     <div id="sharp-keys">
       <span class="key sharp" data-note="C#" data-octave="2" data-group="1"></span>
       <span class="key sharp" data-note="D#" data-octave="2" data-group="1"></span>
@@ -69,9 +69,30 @@
     </div>
   </div>
 
+  <div id="mobile-piano-container" class="mobile-piano">
+    <div id="mobile-sharp-keys" class="mobile-piano">
+      <span class="mobile-key sharp" data-note="C#" data-octave="3" data-group="2"></span>
+      <span class="mobile-key sharp" data-note="D#" data-octave="3" data-group="2"></span>
+      <span class="mobile-key sharp hidden"></span>
+      <span class="mobile-key sharp" data-note="F#" data-octave="3" data-group="2"></span>
+      <span class="mobile-key sharp" data-note="G#" data-octave="3" data-group="2"></span>
+      <span class="mobile-key sharp" data-note="A#" data-octave="3" data-group="2"></span>
+    </div>
+    <div id="mobile-keys" class="mobile-piano">
+      <span class="mobile-key low-c" data-note="C" data-octave="3" data-group="2"></span>
+      <span class="mobile-key" data-note="D" data-octave="3" data-group="2"></span>
+      <span class="mobile-key" data-note="E" data-octave="3" data-group="2"></span>
+      <span class="mobile-key" data-note="F" data-octave="3" data-group="2"></span>
+      <span class="mobile-key" data-note="G" data-octave="3" data-group="2"></span>
+      <span class="mobile-key" data-note="A" data-octave="3" data-group="2"></span>
+      <span class="mobile-key" data-note="B" data-octave="3" data-group="2"></span>
+      <span class="mobile-key high-c" data-note="C" data-octave="4" data-group="3"></span>
+    </div>
+  </div>
+
   
 
-  <div id="effects-container">
+  <div id="effects-container" class="desktop">
 
     <div class="effect-pedal">
       <h1 class="heading-font">Piano</h1>
