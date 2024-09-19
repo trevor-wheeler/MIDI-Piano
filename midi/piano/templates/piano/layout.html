@@ -24,6 +24,9 @@
   {% block script %}{% endblock %}
 </head>
 <body>
+  <audio id="silent" loop>
+    <source src="{% static 'piano/samples/silent.mp3' %}" type="audio/mp3"></source>
+  </audio>
   {% csrf_token %}
   <nav id="nav" class="desktop">
     <div id="logo-container">

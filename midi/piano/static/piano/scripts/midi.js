@@ -26,6 +26,7 @@ function main() {
     const keys = document.querySelectorAll('.key:not(.hidden)');
     const mobileKeys = document.querySelectorAll('.mobile-key:not(.hidden)')
 
+    const silentAudio = document.getElementById('silent');
     const handles = document.querySelectorAll('.knob-handle');
     const savePresetBtn = document.getElementById('save-preset-btn');
     const clearBtn = document.getElementById('clear-btn');
@@ -69,6 +70,12 @@ function main() {
         });
     });
 
+    var unblocked = false;
+    const unblockiOSAudio = () => {
+        silentAudio.play()
+        unblocked = true;
+    }
+
     // For each mobile key
     mobileKeys.forEach(key => {
         let note = key.getAttribute('data-note');
@@ -83,6 +90,9 @@ function main() {
         // When touch ends release note 
         key.addEventListener('touchend', (event) => {
             event.preventDefault();
+            if (!unblocked) {
+                unblockiOSAudio();
+            }
             instrument(note, note+octave, parseInt(octave), false);
         });
     });
