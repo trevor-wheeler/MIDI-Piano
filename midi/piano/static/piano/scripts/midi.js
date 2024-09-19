@@ -75,12 +75,14 @@ function main() {
         let octave = key.getAttribute('data-octave');
 
         // When touched play note
-        key.addEventListener('touchstart', () => {
+        key.addEventListener('touchstart', (event) => {
+            event.preventDefault();
             instrument(note, note+octave, parseInt(octave), true);
         });
 
         // When touch ends release note 
-        key.addEventListener('touchend', () => {
+        key.addEventListener('touchend', (event) => {
+            event.preventDefault();
             instrument(note, note+octave, parseInt(octave), false);
         });
     });

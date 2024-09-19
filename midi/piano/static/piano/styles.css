@@ -144,6 +144,9 @@ body {
     height: 100%;
 }
 main {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
     user-select: none;
     position: relative;
     z-index: 0;
@@ -530,6 +533,9 @@ a {
     box-shadow: 0px 0.39vw #cdd2d7;
     cursor: pointer;
     -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
     user-select: none;
 }
 
@@ -643,6 +649,9 @@ a {
     --dg-numeric-font-family: "Fustat", sans-serif;
     --dg-numeric-font-size: 0em;
     font-weight: 600;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
     user-select: none;
 }
 
@@ -773,12 +782,20 @@ a {
     position: relative;
     display: none;
     height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 #mobile-keys {
     width: 100%;
     height: calc(100% - 8px);
     display: flex;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 #mobile-keys.vertical {
@@ -796,6 +813,10 @@ a {
     left: calc((100% / 8) - (60% / 16));
     pointer-events: none;
     gap: calc(100% / 6 - 60% / 6);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 #mobile-sharp-keys.vertical {
@@ -816,7 +837,9 @@ a {
     border-bottom-left-radius: 10px;
     border: solid 1px #33323d24;
     box-shadow: 0px 8px #cdd2d7;
-    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
     user-select: none;
 }
 
@@ -884,6 +907,10 @@ a {
     border-top-left-radius: 0 !important;
     border-bottom-right-radius: 20px !important;
     border-bottom-left-radius: 20px !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 .vertical.high-c {
@@ -891,6 +918,10 @@ a {
     border-top-left-radius: 20px !important;
     border-bottom-right-radius: 10px !important;
     border-bottom-left-radius: 0 !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 @media (max-width: 1200px) {
