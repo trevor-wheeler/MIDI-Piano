@@ -19,6 +19,15 @@ function main() {
     if (isChrome()) {
         WebMidi.enable().then(onEnabled).catch(err => alert(err));
     }
+    else {
+        const devices = document.getElementById('devices');
+
+        // Display "No devices"
+        let msg = document.createElement('span');
+        msg.textContent = "No devices";
+        msg.classList.add('text');
+        devices.appendChild(msg);
+    }
     
     updateOrientation();
     
@@ -247,7 +256,7 @@ function onEnabled() {
         // Display "No devices"
         let msg = document.createElement('span');
         msg.textContent = "No devices";
-        msg.classList.add('text')
+        msg.classList.add('text');
         devices.appendChild(msg);
     }
 }
