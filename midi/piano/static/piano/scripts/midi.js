@@ -11,8 +11,14 @@ var knobMouseDown = false;
 var x;
 var y;
 
+function isChrome() {
+    return /Chrome/i.test(navigator.userAgent) && !/Edge|Edg/i.test(navigator.userAgent);
+}
+
 function main() {
-    WebMidi.enable().then(onEnabled).catch(err => alert(err));
+    if (isChrome()) {
+        WebMidi.enable().then(onEnabled).catch(err => alert(err));
+    }
     
     updateOrientation();
     

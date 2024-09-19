@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}MIDI Piano{% endblock %}</title>
   <link rel="icon" type="image/x-icon" href="{% static 'piano/favicon.ico' %}">
-  <!-- WebMIDI.js & Tone.js -->
-  <script src="https://cdn.jsdelivr.net/npm/webmidi@next/dist/iife/webmidi.iife.js"></script>
+  <!-- Tone.js -->
   <script src="https://cdn.jsdelivr.net/npm/tone@15.0.4/build/Tone.min.js"></script>
   <!-- Knobs -->
   <script type="module" src="https://www.unpkg.com/dial-gauge/dial-gauge.js"></script>
@@ -56,5 +55,16 @@
   </div>
   {% block body %}
   {% endblock %}
+  <script>
+    function isChrome() {
+      return /Chrome/i.test(navigator.userAgent) && !/Edge|Edg/i.test(navigator.userAgent);
+    }
+
+    if (isChrome()) {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/webmidi@next/dist/iife/webmidi.iife.js';
+      document.head.appendChild(script);
+    }
+  </script>
 </body>
 </html>
